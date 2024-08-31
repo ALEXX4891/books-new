@@ -1,3 +1,16 @@
-img {
+* {
+  box-sizing: border-box;
+}
+
+.imgWrap {
+  /* aspect-ratio: attr(width) / attr(height); */
+  padding: 0 !important;
+  height: min-content;
+
+}
+
+.imgWrap img {
   display: block;
+  max-width: 100%;
+  height: auto !important;
 }
