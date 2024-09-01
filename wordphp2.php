@@ -1,13 +1,3 @@
-<script>
-MathJax = {
-  loader: {load: ['[tex]/mathtools']},
-  tex: {packages: {'[+]': ['mathtools']}},
-};
-</script>
-
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-</script>
 <?php
 class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 {
@@ -168,174 +158,174 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 	}
 
 
-	/**
-	 * Looks up the footnotes XML file and returns the footnotes if any exist
-	 * 
-	 * @param - None
-	 * @returns String - The footnote number and associated text
-	 */
-	private function footnotes()
-	{
-		$zip = new ZipArchive();
-		$_xml_foot = 'word/footnotes.xml';
-		if (true === $zip->open($this->file)) {
-			//Get the footnotes from the word footnotes file file
-			if (($index = $zip->locateName($_xml_foot)) !== false) {
-				$xml_foot = $zip->getFromIndex($index);
-			}
-			$zip->close();
-		}
-		$Ftext = array();
-		if (isset($xml_foot)){ // if the footnotes.xml file exists parse it
-			$enc = mb_detect_encoding($_xml_foot);
-			$this->setXmlParts($foot_xml, $xml_foot, $enc);
-			if($this->debug) {
-				echo "<br>XML File : word/footnotes.xml<br>";
-				echo "<textarea style='width:100%; height: 200px;'>";
-				echo $foot_xml->saveXML();
-				echo "</textarea>";
-			}
-			$reader1 = new XMLReader();
-			$reader1->XML($foot_xml->saveXML());
-			while ($reader1->read()) {
-			// look for required style
-				$znum = 1;
-				if ($reader1->nodeType == XMLREADER::ELEMENT && $reader1->name == 'w:footnote') { //Get footnote
-					$zst = array();
-					$zst[0] = '';
-					$zstc = 1;
-					$Footnum = $reader1->getAttribute("w:id");
-					$Ftext[$Footnum] = '';
-					$st2 = new XMLReader;
-					$st2->xml(trim($reader1->readOuterXML()));
-					while ($st2->read()) {
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:hyperlink') {
-							$hyperlink = $this->getHyperlink($st2,'F'); // Add in hyperlinks in footnotes
-							$Ftext[$Footnum] .= $hyperlink['open'];
-							$Pelement2 = $this->checkFormating($st2,'','');
-							$zst[$zstc] = $Pelement2['style'];
-							if ($zst[$zstc] != $zst[$zstc-1]){
-								if ($zstc > 1){
-									$Ftext[$Footnum] .= "</span>".$Pelement2['style'];
-								} else {
-									$Ftext[$Footnum] .= $Pelement2['style'];
-								}
-								$zstc++;
-							}
-							$Ftext[$Footnum] .= $Pelement2['text'];
-							$Ftext[$Footnum] .= $hyperlink['close'];
-							$st2->next();
-						}
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:br') {
-							$Ftext[$Footnum] .= "<br>";
-						}
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:r') {
+	// /**
+	//  * Looks up the footnotes XML file and returns the footnotes if any exist
+	//  * 
+	//  * @param - None
+	//  * @returns String - The footnote number and associated text
+	//  */
+	// private function footnotes()
+	// {
+	// 	$zip = new ZipArchive();
+	// 	$_xml_foot = 'word/footnotes.xml';
+	// 	if (true === $zip->open($this->file)) {
+	// 		//Get the footnotes from the word footnotes file file
+	// 		if (($index = $zip->locateName($_xml_foot)) !== false) {
+	// 			$xml_foot = $zip->getFromIndex($index);
+	// 		}
+	// 		$zip->close();
+	// 	}
+	// 	$Ftext = array();
+	// 	if (isset($xml_foot)){ // if the footnotes.xml file exists parse it
+	// 		$enc = mb_detect_encoding($_xml_foot);
+	// 		$this->setXmlParts($foot_xml, $xml_foot, $enc);
+	// 		if($this->debug) {
+	// 			echo "<br>XML File : word/footnotes.xml<br>";
+	// 			echo "<textarea style='width:100%; height: 200px;'>";
+	// 			echo $foot_xml->saveXML();
+	// 			echo "</textarea>";
+	// 		}
+	// 		$reader1 = new XMLReader();
+	// 		$reader1->XML($foot_xml->saveXML());
+	// 		while ($reader1->read()) {
+	// 		// look for required style
+	// 			$znum = 1;
+	// 			if ($reader1->nodeType == XMLREADER::ELEMENT && $reader1->name == 'w:footnote') { //Get footnote
+	// 				$zst = array();
+	// 				$zst[0] = '';
+	// 				$zstc = 1;
+	// 				$Footnum = $reader1->getAttribute("w:id");
+	// 				$Ftext[$Footnum] = '';
+	// 				$st2 = new XMLReader;
+	// 				$st2->xml(trim($reader1->readOuterXML()));
+	// 				while ($st2->read()) {
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:hyperlink') {
+	// 						$hyperlink = $this->getHyperlink($st2,'F'); // Add in hyperlinks in footnotes
+	// 						$Ftext[$Footnum] .= $hyperlink['open'];
+	// 						$Pelement2 = $this->checkFormating($st2,'','');
+	// 						$zst[$zstc] = $Pelement2['style'];
+	// 						if ($zst[$zstc] != $zst[$zstc-1]){
+	// 							if ($zstc > 1){
+	// 								$Ftext[$Footnum] .= "</span>".$Pelement2['style'];
+	// 							} else {
+	// 								$Ftext[$Footnum] .= $Pelement2['style'];
+	// 							}
+	// 							$zstc++;
+	// 						}
+	// 						$Ftext[$Footnum] .= $Pelement2['text'];
+	// 						$Ftext[$Footnum] .= $hyperlink['close'];
+	// 						$st2->next();
+	// 					}
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:br') {
+	// 						$Ftext[$Footnum] .= "<br>";
+	// 					}
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:r') {
 			
-							$Pelement = $this->checkFormating($st2,'',''); // Get inline style and associated text
-							if (!isset($Pelement['style'])){
-								$Pelement['style'] = '';
-							}	
-							$zst[$zstc] = $Pelement['style'];
-							if ($zst[$zstc] != $zst[$zstc-1]){
-								if ($zstc > 1){
-									$Ftext[$Footnum] .= "</span>".$Pelement['style'];
-								} else {
-									$Ftext[$Footnum] .= $Pelement['style'];
-								}
-								$zstc++;
-							}
-							$Ftext[$Footnum] .= $Pelement['text'];
-						}
-					}
-				}
-			}
-		}
-		return $Ftext;
-	}
+	// 						$Pelement = $this->checkFormating($st2,'',''); // Get inline style and associated text
+	// 						if (!isset($Pelement['style'])){
+	// 							$Pelement['style'] = '';
+	// 						}	
+	// 						$zst[$zstc] = $Pelement['style'];
+	// 						if ($zst[$zstc] != $zst[$zstc-1]){
+	// 							if ($zstc > 1){
+	// 								$Ftext[$Footnum] .= "</span>".$Pelement['style'];
+	// 							} else {
+	// 								$Ftext[$Footnum] .= $Pelement['style'];
+	// 							}
+	// 							$zstc++;
+	// 						}
+	// 						$Ftext[$Footnum] .= $Pelement['text'];
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	return $Ftext;
+	// }
 
 
-	/**
-	 * Looks up the endnotes XML file and returns the endnotes if any exist
-	 * 
-	 * @param - None
-	 * @returns String - The endnote number and associated text
-	 */
-	private function endnotes()
-	{
-		$zip = new ZipArchive();
-		$_xml_end = 'word/endnotes.xml';
-		if (true === $zip->open($this->file)) {
-			//Get the endnotes from the endnotes file
-			if (($index = $zip->locateName($_xml_end)) !== false) {
-				$xml_end = $zip->getFromIndex($index);
-			}
-			$zip->close();
-		}
-		$Etext = array();
-		if (isset($xml_end)){ // if the endnotes.xml file exists parse it
-			$enc = mb_detect_encoding($_xml_end);
-			$this->setXmlParts($end_xml, $xml_end, $enc);
-			if($this->debug) {
-				echo "<br>XML File : word/endnotes.xml<br>";
-				echo "<textarea style='width:100%; height: 200px;'>";
-				echo $end_xml->saveXML();
-				echo "</textarea>";
-			}
+	// /**
+	//  * Looks up the endnotes XML file and returns the endnotes if any exist
+	//  * 
+	//  * @param - None
+	//  * @returns String - The endnote number and associated text
+	//  */
+	// private function endnotes()
+	// {
+	// 	$zip = new ZipArchive();
+	// 	$_xml_end = 'word/endnotes.xml';
+	// 	if (true === $zip->open($this->file)) {
+	// 		//Get the endnotes from the endnotes file
+	// 		if (($index = $zip->locateName($_xml_end)) !== false) {
+	// 			$xml_end = $zip->getFromIndex($index);
+	// 		}
+	// 		$zip->close();
+	// 	}
+	// 	$Etext = array();
+	// 	if (isset($xml_end)){ // if the endnotes.xml file exists parse it
+	// 		$enc = mb_detect_encoding($_xml_end);
+	// 		$this->setXmlParts($end_xml, $xml_end, $enc);
+	// 		if($this->debug) {
+	// 			echo "<br>XML File : word/endnotes.xml<br>";
+	// 			echo "<textarea style='width:100%; height: 200px;'>";
+	// 			echo $end_xml->saveXML();
+	// 			echo "</textarea>";
+	// 		}
 		
-			$reader1 = new XMLReader();
-			$reader1->XML($end_xml->saveXML());
-			while ($reader1->read()) {
-			// look for required style
-				$znum = 1;
-				if ($reader1->nodeType == XMLREADER::ELEMENT && $reader1->name == 'w:endnote') { //Get endnote
-					$zst = array();
-					$zst[0] = '';
-					$zstc = 1;
-					$Endnum = $reader1->getAttribute("w:id");
-					$Etext[$Endnum] = '';
-					$st2 = new XMLReader;
-					$st2->xml(trim($reader1->readOuterXML()));
-					while ($st2->read()) {
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:hyperlink') {
-							$hyperlink = $this->getHyperlink($st2,'E'); // Add in hyperlinks in endnotes
-							$Etext[$Endnum] .= $hyperlink['open'];
-							$Pelement2 = $this->checkFormating($st2,'','');
-							$zst[$zstc] = $Pelement2['style'];
-							if ($zst[$zstc] != $zst[$zstc-1]){
-								if ($zstc > 1){
-									$Etext[$Endnum] .= "</span>".$Pelement2['style'];
-								} else {
-									$Etext[$Endnum] .= $Pelement2['style'];
-								}
-								$zstc++;
-							}
-							$Etext[$Endnum] .= $Pelement2['text'];
-							$Etext[$Endnum] .= $hyperlink['close'];
-							$st2->next();
-						}
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:br') {
-							$Etext[$Endnum] .= "<br>";
-						}
-						if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:r') {
+	// 		$reader1 = new XMLReader();
+	// 		$reader1->XML($end_xml->saveXML());
+	// 		while ($reader1->read()) {
+	// 		// look for required style
+	// 			$znum = 1;
+	// 			if ($reader1->nodeType == XMLREADER::ELEMENT && $reader1->name == 'w:endnote') { //Get endnote
+	// 				$zst = array();
+	// 				$zst[0] = '';
+	// 				$zstc = 1;
+	// 				$Endnum = $reader1->getAttribute("w:id");
+	// 				$Etext[$Endnum] = '';
+	// 				$st2 = new XMLReader;
+	// 				$st2->xml(trim($reader1->readOuterXML()));
+	// 				while ($st2->read()) {
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:hyperlink') {
+	// 						$hyperlink = $this->getHyperlink($st2,'E'); // Add in hyperlinks in endnotes
+	// 						$Etext[$Endnum] .= $hyperlink['open'];
+	// 						$Pelement2 = $this->checkFormating($st2,'','');
+	// 						$zst[$zstc] = $Pelement2['style'];
+	// 						if ($zst[$zstc] != $zst[$zstc-1]){
+	// 							if ($zstc > 1){
+	// 								$Etext[$Endnum] .= "</span>".$Pelement2['style'];
+	// 							} else {
+	// 								$Etext[$Endnum] .= $Pelement2['style'];
+	// 							}
+	// 							$zstc++;
+	// 						}
+	// 						$Etext[$Endnum] .= $Pelement2['text'];
+	// 						$Etext[$Endnum] .= $hyperlink['close'];
+	// 						$st2->next();
+	// 					}
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:br') {
+	// 						$Etext[$Endnum] .= "<br>";
+	// 					}
+	// 					if ($st2->nodeType == XMLREADER::ELEMENT && $st2->name == 'w:r') {
 						
-							$Pelement = $this->checkFormating($st2,'',''); // Get inline style and associated text				
-							$zst[$zstc] = $Pelement['style'];
-							if ($zst[$zstc] != $zst[$zstc-1]){
-								if ($zstc > 1){
-									$Etext[$Endnum] .= "</span>".$Pelement['style'];
-								} else {
-									$Etext[$Endnum] .= $Pelement['style'];
-								}
-								$zstc++;
-							}
-							$Etext[$Endnum] .= $Pelement['text'];
-						}
-					}
-				}
-			}
-		}
-		return $Etext;
-	}
+	// 						$Pelement = $this->checkFormating($st2,'',''); // Get inline style and associated text				
+	// 						$zst[$zstc] = $Pelement['style'];
+	// 						if ($zst[$zstc] != $zst[$zstc-1]){
+	// 							if ($zstc > 1){
+	// 								$Etext[$Endnum] .= "</span>".$Pelement['style'];
+	// 							} else {
+	// 								$Etext[$Endnum] .= $Pelement['style'];
+	// 							}
+	// 							$zstc++;
+	// 						}
+	// 						$Etext[$Endnum] .= $Pelement['text'];
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	return $Etext;
+	// }
 
 
 	/**
@@ -570,7 +560,14 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 		$node = trim($xml->readOuterXML());
 		$t = '';
 		// add <br> tags
-		if (strstr($node,'<w:br ')) $t = '<br>';					 
+		if (strstr($node,'w:br')) $t = '<br>';	
+		if (strstr($node,'w:lastRenderedPageBreak')) {
+			global $pageId;
+			$pageId++;
+
+			$t = '</div><div class="page" data-page="' . $pageId + 1 . '">';	
+		}				 
+
 		// look for formatting tags
 		$f = "<span style='";
 		if ($Dcap == 'drop' OR $Dcap == 'margin'){
@@ -593,8 +590,20 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 		$Wingding3 = array(32 => 32, 11104, 11106, 11105, 11107, 11110, 11111, 11113, 11112, 11120, 11122, 11121, 11123, 11126, 11128, 11131, 11133, 11108, 11109, 11114, 11116, 11115, 11117, 11085, 11168, 11169, 11170, 11171, 11172, 11173, 11174, 11175, 11152, 11153, 11154, 11155, 11136, 11139, 11134, 11135, 11140, 11142, 11141, 11143, 11151, 11149, 11150, 11148, 11118, 11119, 9099, 8996, 8963, 8997, 9141, 9085, 8682, 11192, 129184, 129185, 129186, 129187, 129188, 129189, 129190, 129191, 129192, 129193, 129194, 129195, 8592, 8594, 8593, 8595, 8598, 8599, 8601, 8600, 129112, 129113, 9650, 9660, 9651, 9661, 9668, 9658, 9665, 9655, 9699, 9698, 9700, 9701, 128896, 128898, 128897, 128=>128899, 9650, 9660, 9664, 9654, 11164, 11166, 11165, 11167, 129040, 129042, 129041, 129043, 129044, 129046, 129045, 129047, 129048, 129050, 129049, 129051, 129052, 129054, 129053, 129055, 129024, 129026, 129025, 129027, 129028, 129030, 129029, 129031, 129032, 129034, 129033, 129035, 129056, 129058, 129060, 129062, 129064, 129066, 129068, 129180, 129181, 129182, 129183, 129070, 129072, 129074, 129076, 129078, 129080, 129082, 129081, 129083, 129176, 129178, 129177, 129179, 129084, 129086, 129085, 129087, 129088, 129090, 129089, 129091, 129092, 129094, 129093, 129095, 11176, 11177, 11178, 11179, 11180, 11181, 11182, 11183, 129120, 129122, 129121, 129123, 129124, 129125, 129127, 129126, 129136, 129138, 129137, 129139, 129140, 129141, 129143, 129142, 129152, 129152, 129153, 129155, 129156, 129157, 129159, 129158, 129168, 129170, 129169, 129171, 129172, 129174, 129173, 129175);
 		$Webdings = array(32=>32, 128375, 128376, 128370, 128374, 127942, 127894, 128391, 128488, 128489, 128496, 128497, 127798, 127895, 128638, 128636, 128469, 128470, 128471, 9204, 9205, 9206, 9207, 9194, 9193, 9198, 9197, 9208, 9209, 9210, 128474, 128499, 128736, 127959, 127960, 127961, 127962, 127964, 127981, 127963, 127968, 127958, 127965, 128739, 128269, 127956, 128065, 128066, 127966, 127957, 128740, 127967, 128755, 128364, 128363, 128360, 128264, 127892, 127893, 128492, 128637, 128493, 128490, 128491, 11156, 10004, 128690, 9633, 128737, 128230, 128753, 9632, 128657, 128712, 128745, 128752, 128968, 128372, 9899, 128741, 128660, 128472, 128473, 10067, 128754, 128647, 128653, 9971, 128711, 8854, 128685, 128494, 124, 128495, 128498, 128=>128697, 128698, 128713, 128714, 128700, 128125, 127947, 9975, 127938, 127948, 127946, 127940, 127949, 127950, 128664, 128480, 128738, 128176, 127991, 128179, 128106, 128481, 128482, 128483, 10031, 128388, 128389, 128387, 128390, 128441, 128442, 128443, 128373, 128368, 128445, 128446, 128203, 128466, 128467, 128214, 128218, 128478, 128479, 128451, 128450, 128444, 127917, 127900, 127896, 127897, 127911, 128191, 127902, 128247, 127903, 127916, 128253, 128249, 128254, 128251, 127898, 127899, 128250, 128187, 128421, 128422, 128423, 128377, 127918, 128379, 128380, 128223, 128385, 128384, 128424, 128425, 128447, 128426, 128476, 128274, 128275, 128477, 128229, 128594, 128371, 127779, 127780, 127781, 127782, 9729, 127783, 127784, 127785, 127786, 127788, 127787, 127772, 127777, 128715, 128719, 127869, 127864, 128718, 128717, 9413, 9855, 128710, 128392, 127891, 128484, 128485, 128486, 128487, 128746, 128063, 128038, 128031, 128021, 128008, 128620, 128622, 128621, 128623, 128506, 127757, 127759, 127758, 128330);
 		$Symbol = array(32=>32, 33, 8704, 35, 8707, 37, 38, 8717, 40, 41, 8727, 43, 44, 8722, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 8773, 913, 914, 935, 916, 917, 934, 915, 919, 921, 977, 922, 923, 924, 925, 927, 928, 920, 929, 931, 932, 933, 962, 937, 926, 936, 918, 91, 8756, 93, 8869, 95, 32, 945, 946, 967, 948, 949, 981, 947, 951, 953, 966, 954, 955, 956, 957, 959, 960, 952, 961, 963, 964, 965, 982, 969, 958, 968, 950, 123, 124, 125, 8764, 161=>978, 8242, 8804, 8260, 8734, 402, 9827, 9830, 9829, 9824, 8596, 8592, 8593, 8594, 8595, 176, 177, 8243, 8805, 180, 8733, 8706, 8226, 184, 8800, 8801, 8776, 8230, 9168, 9135, 8629, 8501, 8465, 8476, 8472, 8855, 8853, 8709, 8745, 8746, 8835, 8839, 8836, 8834, 8838, 8712, 8713, 8736, 8711, 210, 211, 8482, 8719, 8730, 8901, 216, 8743, 8744, 8660, 8656, 8657, 8658, 8659, 9674, 9001, 226, 227, 8482, 8721, 9115, 9116, 9117, 9121, 9122, 9123, 9127, 9128, 9129, 9130, 8364, 9002, 8747, 8992, 9134, 8993, 9118, 9119, 9420, 9124, 9125, 9126, 9131, 9132, 9133);
+		
+
+		// $arr = []; 
+		// while ($reader->read()) {
+		// 	$arr[] = $reader->name;
+		// }
+		// echo '<pre>';
+		// print_r($arr);
+		// echo '</pre>';
+		// // die();
 
 		while ($reader->read()) {
+			// echo $reader->name . ' - ' . $reader->nodeType . '<br>';
+
 			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'w:instrText') {
 				$Htext = htmlentities($reader->expand()->textContent);
 				if (substr($Htext,0,5) == "HYPER"){
@@ -613,8 +622,15 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 			}
 			if($reader->name == "w:br") { // Checks for page break
 				if ($reader->getAttribute("w:type") == 'page'){
-					$ret['Pbreak'] = 'Y';
-				}
+			// 		$ret['Pbreak'] = 'Y';
+			// 		echo 'Pbreak<br>';
+			// 	}
+			// }
+			// if($reader->name === 'w:lastRenderedPageBreak') {
+			// 	if ($reader->getAttribute("w:type") == 'page'){
+			// 		$ret['Pbreak'] = 'Y';
+			// 		echo 'Pbreak<br>';
+				}		
 			}
 			if($reader->name == "w:b") {
 				$Lstyle['Bold'] = "font-weight: bold;";
@@ -739,10 +755,19 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 			if ($this->Icss <> 'O'){
 				if($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'w:drawing' ) { // Get a lower resolution image
 					$r = $this->checkImageFormating($reader);
-					if ($this->Icss == 'Y'){
-						$img = $r !== null ? "<image class='Wimg".$zimgcount."' src='".$r['image']."' />" : null;
+					if ($this->Icss == 'Y'){						
+						$img = $r !== null ? "<div class='imgWrap'><image class='Wimg".$zimgcount."' src='".$r['image']."' /></div>" : null;
 					} else {
-						$img = $r !== null ? "<image src='".$r['image']."' ".$r['style']." />" : null;
+						// $css = $r['style'];
+						// echo $css . "\n";
+						// $matches = [];
+						// $reg = '/\b([-a-z]+)\s*:((?:(?:\(.*?\))*|(?:\'.*?\')*|(?:\".*?\")*|.)*?)\s*;/s';
+						// preg_match_all($reg, $css, $matches);
+						// $parsingStyles = array_combine($matches[1], $matches[2]);
+						// echo "<pre>\n";
+						// var_dump($parsingStyles);
+						// echo "</pre>\n";
+						$img = $r !== null ? "<div class='imgWrap'><image src='".$r['image']."' ".$r['style']." /></div>" : null;
 					}
 				}
 				if($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'v:shape' ) { // get size of higher resolution image
@@ -930,9 +955,9 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 			$Fsize = $this->Rstyle['Default']['FontS'];
 		}
 		if ($script == 'Y'){
-			$f .= " font-size: ".$Fsize * 0.65 ."rem;";
-		} else {
-			$f .= " font-size: ".$Fsize."rem;";
+		// 	$f .= " font-size: ".$Fsize * 0.65 ."rem;";
+		// } else {
+		// 	$f .= " font-size: ".$Fsize."rem;";
 		}
 		if (isset($Lstyle['Bcolor'])){
 			$Bcolor = $Lstyle['Bcolor'];
@@ -1476,12 +1501,12 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 			
 			$fname = $this->tmpDir.'/'.$relId.'.jpg';
 			if ($ext == 'wmf'){ // Note that Imagick will only convert '.wmf' files (NOT '.emf' files)
-				$imagick = new Imagick();
-				$imagick->setresolution(300, 300);
-				$imagick->readImage($ftname);
-				$imagick->resizeImage(1000,0,Imagick::FILTER_LANCZOS,1);
-				$imagick->setImageFormat('jpg');
-				$imagick->writeImage($fname);
+				// $imagick = new Imagick();
+				// $imagick->setresolution(300, 300);
+				// $imagick->readImage($ftname);
+				// $imagick->resizeImage(1000,0,Imagick::FILTER_LANCZOS,1);
+				// $imagick->setImageFormat('jpg');
+				// $imagick->writeImage($fname);
 			}
 			
 
@@ -1526,107 +1551,107 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 		return $fname;
 	}
 
-	/**
-	 * CHECKS IF ELEMENT IS AN HYPERLINK
-	 *  
-	 * @param XML $xml - The XML node
-	 * @return Array - Hyperlink open and closing tag definition
-	 */
-	private function getHyperlink(&$xml,$RelF)
-	{
-		$ret = array('open'=>'<ul>','close'=>'</ul>');
-		$link ='';
-		static $rels_end = null ;
-		static $rels_foot = null ;
-		if($xml->hasAttributes) {
-			$attribute = "";
-			while($xml->moveToNextAttribute()) {
-				if($xml->name == "r:id"){  // check for external hyperlinks
-					$attribute = $xml->value;
-				}
-				if($xml->name == "w:anchor"){  // check for internal bookmark links
-					$internalT = $xml->value;
-					if (substr($internalT,0,1) == '_'){
-					$internal = substr($internalT,1);
-				} else {
-					$internal = $internalT;
-				}
+	// /**
+	//  * CHECKS IF ELEMENT IS AN HYPERLINK
+	//  *  
+	//  * @param XML $xml - The XML node
+	//  * @return Array - Hyperlink open and closing tag definition
+	//  */
+	// private function getHyperlink(&$xml,$RelF)
+	// {
+	// 	$ret = array('open'=>'<ul>','close'=>'</ul>');
+	// 	$link ='';
+	// 	static $rels_end = null ;
+	// 	static $rels_foot = null ;
+	// 	if($xml->hasAttributes) {
+	// 		$attribute = "";
+	// 		while($xml->moveToNextAttribute()) {
+	// 			if($xml->name == "r:id"){  // check for external hyperlinks
+	// 				$attribute = $xml->value;
+	// 			}
+	// 			if($xml->name == "w:anchor"){  // check for internal bookmark links
+	// 				$internalT = $xml->value;
+	// 				if (substr($internalT,0,1) == '_'){
+	// 				$internal = substr($internalT,1);
+	// 			} else {
+	// 				$internal = $internalT;
+	// 			}
 
-					$this->anchor[$internal] = 'Y';
-				}
-			}
+	// 				$this->anchor[$internal] = 'Y';
+	// 			}
+	// 		}
 			
-			if($attribute != "") {
-				$reader = new XMLReader();
-				if ($RelF == 'P'){
-					$reader->XML($this->rels_xml->saveXML());
-				} else if($RelF == 'F'){
-					if(!$rels_foot){
-						$zip = new ZipArchive();
-						$_foot_rels = 'word/_rels/footnotes.xml.rels';
-						if (true === $zip->open($this->file)) {
-							//Get the footnotes relationships file
-							if (($index = $zip->locateName($_foot_rels)) !== false) {
-								$foot_rels = $zip->getFromIndex($index);
-							}
-							$zip->close();
-						}
-						$enc = mb_detect_encoding($foot_rels);
-						$this->setXmlParts($rels_foot, $foot_rels, $enc);
-						if($this->debug) {
-							echo "<br>XML File : word/_rels/footnotes.xml.rels<br>";
-							echo "<textarea style='width:100%; height: 200px;'>";
-							echo $rels_foot->saveXML();
-							echo "</textarea>";
-						}
-					}
-					$reader->XML($rels_foot->saveXML()); //Get the footnote hyperlinks from the footnotes relationships file
+	// 		if($attribute != "") {
+	// 			$reader = new XMLReader();
+	// 			if ($RelF == 'P'){
+	// 				$reader->XML($this->rels_xml->saveXML());
+	// 			} else if($RelF == 'F'){
+	// 				if(!$rels_foot){
+	// 					$zip = new ZipArchive();
+	// 					$_foot_rels = 'word/_rels/footnotes.xml.rels';
+	// 					if (true === $zip->open($this->file)) {
+	// 						//Get the footnotes relationships file
+	// 						if (($index = $zip->locateName($_foot_rels)) !== false) {
+	// 							$foot_rels = $zip->getFromIndex($index);
+	// 						}
+	// 						$zip->close();
+	// 					}
+	// 					$enc = mb_detect_encoding($foot_rels);
+	// 					$this->setXmlParts($rels_foot, $foot_rels, $enc);
+	// 					if($this->debug) {
+	// 						echo "<br>XML File : word/_rels/footnotes.xml.rels<br>";
+	// 						echo "<textarea style='width:100%; height: 200px;'>";
+	// 						echo $rels_foot->saveXML();
+	// 						echo "</textarea>";
+	// 					}
+	// 				}
+	// 				$reader->XML($rels_foot->saveXML()); //Get the footnote hyperlinks from the footnotes relationships file
 
-				} else if($RelF == 'E'){
-					if(!$rels_end){
-						$zip = new ZipArchive();
-						$_end_rels = 'word/_rels/endnotes.xml.rels';
-						if (true === $zip->open($this->file)) {
-							//Get the endnotes relationships file
-							if (($index = $zip->locateName($_end_rels)) !== false) {
-								$end_rels = $zip->getFromIndex($index);
-							}
-							$zip->close();
-						}
-						$enc = mb_detect_encoding($end_rels);
-						$this->setXmlParts($rels_end, $end_rels, $enc);
-						if($this->debug) {
-							echo "<br>XML File : word/_rels/endnotes.xml.rels<br>";
-							echo "<textarea style='width:100%; height: 200px;'>";
-							echo $rels_end->saveXML();
-							echo "</textarea>";
-						}
-					}
-					$reader->XML($rels_end->saveXML()); //Get the endnote hyperlinks from the endnotes relationships file
+	// 			} else if($RelF == 'E'){
+	// 				if(!$rels_end){
+	// 					$zip = new ZipArchive();
+	// 					$_end_rels = 'word/_rels/endnotes.xml.rels';
+	// 					if (true === $zip->open($this->file)) {
+	// 						//Get the endnotes relationships file
+	// 						if (($index = $zip->locateName($_end_rels)) !== false) {
+	// 							$end_rels = $zip->getFromIndex($index);
+	// 						}
+	// 						$zip->close();
+	// 					}
+	// 					$enc = mb_detect_encoding($end_rels);
+	// 					$this->setXmlParts($rels_end, $end_rels, $enc);
+	// 					if($this->debug) {
+	// 						echo "<br>XML File : word/_rels/endnotes.xml.rels<br>";
+	// 						echo "<textarea style='width:100%; height: 200px;'>";
+	// 						echo $rels_end->saveXML();
+	// 						echo "</textarea>";
+	// 					}
+	// 				}
+	// 				$reader->XML($rels_end->saveXML()); //Get the endnote hyperlinks from the endnotes relationships file
 
-				}
+	// 			}
 				
-				while ($reader->read()) {
-					if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name=='Relationship') {
-						if($reader->getAttribute("Id") == $attribute) {
-							$link = $reader->getAttribute('Target');
-							break;
-						}
-					}
-				}
-			}
-		}
+	// 			while ($reader->read()) {
+	// 				if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name=='Relationship') {
+	// 					if($reader->getAttribute("Id") == $attribute) {
+	// 						$link = $reader->getAttribute('Target');
+	// 						break;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
 		
-		if($link != "") { // external hyperlinks
-			$ret['open'] = "<a href='".$link."' target='_blank' rel='noopener noreferrer'>";
-			$ret['close'] = "</a>";
-		} else { // internal bookmark links
-			$ret['open'] = "<a id='R".$internal."' style='text-decoration:none;' href='#".$internal."'>";
-			$ret['close'] = "</a>";
-		}
+	// 	if($link != "") { // external hyperlinks
+	// 		$ret['open'] = "<a href='".$link."' target='_blank' rel='noopener noreferrer'>";
+	// 		$ret['close'] = "</a>";
+	// 	} else { // internal bookmark links
+	// 		$ret['open'] = "<a id='R".$internal."' style='text-decoration:none;' href='#".$internal."'>";
+	// 		$ret['close'] = "</a>";
+	// 	}
 		
-		return $ret;
-	}
+	// 	return $ret;
+	// }
 
 
 
@@ -1739,8 +1764,8 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 					$text .= "<p".$Dstyle['Pform'].">";
 					$Pformat = 'D';
 				}
-				$hyperlink = $this->getHyperlink($paragraph,'P'); // Add in hyperlinks and bookmarks
-				$text .= $hyperlink['open'];
+				// $hyperlink = $this->getHyperlink($paragraph,'P'); // Add in hyperlinks and bookmarks
+				// $text .= $hyperlink['open'];
 				$Pelement2 = $this->checkFormating($paragraph,$Pstyle,$list_format['Dcap']);
 				$zst[$zstc] = $Pelement2['style'];
 				if ($zst[$zstc] != $zst[$zstc-1]){
@@ -1752,7 +1777,7 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 					$zstc++;
 				}
 				$text .= $Pelement2['text'];
-				$text .= $hyperlink['close'];
+				// $text .= $hyperlink['close'];
 				$paragraph->next();
 			} else if ($paragraph->nodeType == XMLREADER::ELEMENT && $paragraph->name === 'w:checkBox') {
 				$cb2 = new SimpleXMLElement($paragraph->readOuterXML());
@@ -1770,11 +1795,11 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 				$Mpara = 'Y';
 			} else if ($paragraph->nodeType == XMLREADER::ELEMENT && $paragraph->name === 'm:jc') {
 				$Malign = $paragraph->getAttribute("m:val");
-			} else if ($paragraph->nodeType == XMLREADER::ELEMENT && $paragraph->name === 'm:oMath') {
-				$Melement = $this->getMaths($paragraph, $Mpara, $Malign);
-				$text .= $Melement;
-				$MP = 'Y';
-				$this->Maths = 'Y';
+			// } else if ($paragraph->nodeType == XMLREADER::ELEMENT && $paragraph->name === 'm:oMath') {
+				// $Melement = $this->getMaths($paragraph, $Mpara, $Malign);
+				// $text .= $Melement;
+				// $MP = 'Y';
+				// $this->Maths = 'Y';
 			}
 		}
 		if ($zzz == $text){
@@ -1796,663 +1821,663 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 
 // ------------------- START OF MATHS PROCESSING ------------------------
 
-	/**
-	 * CHECKS THE MATHS FUNCTION OF A GIVEN ELEMENT
-	 * 
-	 * @param XML $xml - The XML node
-	 * @param String $Pstyle - The name of the paragraph style
-	 * @param String $Dcap - The type of drop capital if it exists
-	 * @return Array - The elements styling and text
-	 */
-	private function getMaths(&$xml, $Mpara, $Malign)
-	{	
+	// /**
+	//  * CHECKS THE MATHS FUNCTION OF A GIVEN ELEMENT
+	//  * 
+	//  * @param XML $xml - The XML node
+	//  * @param String $Pstyle - The name of the paragraph style
+	//  * @param String $Dcap - The type of drop capital if it exists
+	//  * @return Array - The elements styling and text
+	//  */
+	// private function getMaths(&$xml, $Mpara, $Malign)
+	// {	
 		
-		$Mintegral = $MintSS = $MIsubL = $MIsupL = $MIsup = $MIsub = $Msub = $Msup = $Echr = $Mlimit = $Mchr = $Bchr = $MuO = $DSmaths = $MaccC = $MaccT = $MaccC = $MGC = $MGL = $Mfunc= $MFnb = $Mear = $Me = $Begch = $Endch = $MdivT = $MuON = $Limpos = $Mmat = $Matpos = $Mmsub = '';
-		$Mroot = $Elevel = $Mden = $Mnum = 0;
-		$MRexp = array();
-		if ($Mpara == 'Y'){
-			$Dmaths = "\[";
-		} else {
-			$Dmaths = "\(";
-		}
-		if ($Malign == 'left'){
-			$Dmaths .= "\begin{flalign}\;";
-		}
-		if ($Malign == 'right'){
-			$Dmaths .= "\begin{flalign} && ";
-		}
-		$node = trim($xml->readOuterXML());
-		$reader = new XMLReader();
-		$reader->XML($node);
-		while ($reader->read()) {
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:naryPr') { //get maths integral funtion
-				$mf = new XMLReader;
-				$mf->xml(trim($reader->readOuterXML()));
-				while ($mf->read()) {
-					if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:chr') { //get integral function type
-						$Mintegral = $mf->getAttribute("m:val");
-					}
-					if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:limLoc') { //get integral function limits
-						$MintSS = $mf->getAttribute("m:val");
-						if ($MintSS == 'undOvr'){
-							$MuO = '\limits';
-						}
-						if ($MintSS == 'subSup'){
-							$MuON = '\nolimits';
-						}
-						if ($MintSS == 'subSup' OR $MintSS == 'undOvr'){
-							$MIsubL = 'Y';
-							$MIsupL = 'Y';
-						} else {
-							$MIsubL = 'N';
-							$MIsupL = 'N';
-						}
-					}
-					if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:subHide') {  
-						$MSbH = $mf->getAttribute("m:val");
-						if ($MSbH == 1){
-							$MIsubL = 'N';
-						}
-					}
-					if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:supHide') {  
-						$MSpH = $mf->getAttribute("m:val");
-						if ($MSpH == 1){
-							$MIsupL = 'N';
-						}
-					}
-					if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:grow') { //get integral function limits
-						$Mgrow = $mf->getAttribute("m:val");
-						if ($Mgrow == '1'){
-							$MIsubL = 'Y';
-							$MIsupL = 'Y';
-						} else {
-							$MIsubL = 'N';
-							$MIsupL = 'N';
-						}
-					}
-				}
-				if ($Mintegral == ''){
-					$Dmaths .= "\int".$MuO;
-				} else {
-					if ($Mintegral == '∬'){
-						$Dmaths .= "\iint".$MuO;
-					} else if ($Mintegral == '∭'){
-						$Dmaths .= "\iiint".$MuO;
-					} else if ($Mintegral == '∮'){
-						$Dmaths .= "\oint".$MuO;
-					} else if ($Mintegral == '∯'){
-						$Dmaths .= "\oint\oint".$MuO;
-					} else if ($Mintegral == '∰'){
-						$Dmaths .= "\oint\oint\oint".$MuO;
-					} else if ($Mintegral == '∑'){
-						$Dmaths .= "\sum".$MuON;
-						if ($MIsubL <> 'N'){
-							$MIsubL = 'Y';
-						}
-					} else if ($Mintegral == '∏'){
-						$Dmaths .= "\prod".$MuON;
-					} else if ($Mintegral == '∐'){
-						$Dmaths .= "\coprod".$MuON;
-					} else if ($Mintegral == '⋁'){
-						$Dmaths .= "\bigvee".$MuON;
-					} else if ($Mintegral == '⋀'){
-						$Dmaths .= "\bigwedge".$MuON;
-					} else if ($Mintegral == '⋃'){
-						$Dmaths .= "\bigcup".$MuON;
-					} else if ($Mintegral == '⋂'){
-						$Dmaths .= "\bigcap".$MuON;
-					}
-				}
-				$MuON = $MuO = '';
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sub') { 
-				if ($MIsubL == 'Y'){ //get start of maths subscript
-					$Dmaths .= "_{";
-					$MsubF = 'Y';
-					$MIsub = '';
-				} else if ($MIsubL == 'N'){
-					$Dmaths .= "";
-					$MIsubL = '';
-				} else if ($MIsubL == ''){
-					$Dmaths .= "_{";
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sub') {
-				if ($MIsubL == '' OR $MIsubL == 'Y'){
-					$Dmaths .= "}";
-				} else {
-					$MIsubL = '';
-				}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sup') { //get start of maths superscript
-				if ($MIsupL == 'Y'){
-					$Dmaths .= "^{";
-					$MsupF = 'Y';
-					$MIsup = '';
-				} else if ($MIsupL == 'N'){
-					$Dmaths .= "";
-					$MIsupL = '';
-				} else if ($MIsupL == ''){
-					$Dmaths .= "^{";
-				}				
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sup') {
-				if ($MIsupL == '' OR $MIsupL == 'Y'){
-					$Dmaths .= "}";
-				} else {
-					$MIsupL = '';
-				}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:d') {
-				$Bchr = $Echr = $Begch = $Endch = '';
-				$mbrack = new XMLReader;
-				$mbrack->xml(trim($reader->readOuterXML()));
-				while ($mbrack->read()) {
-					if ($mbrack->name == 'm:begChr') { //check for alternative beginning bracket chr 
-						$Bchr = $mbrack->getAttribute("m:val");
-						$Begch = 'Y';
-					}
-					if ($mbrack->name == 'm:endChr') { //check for alternative ending bracket chr 
-						$Echr = $mbrack->getAttribute("m:val");
-						$Endch = 'Y';
-					}
-				}
-				$Dmaths .= "\left";
-				if ($Begch == 'Y'){
-					if ($Bchr == ''){
-						$Dmaths .= ".";
-					} else if ($Bchr == '{'){ //left brace
-						$Dmaths .= "\{ ";
-					} else if ($Bchr == '}'){ //right brace
-						$Dmaths .= "\} ";
-					} else if ($Bchr == '〈' OR $Bchr == '⟨'){ //left angle
-						$Dmaths .= "\langle ";
-					} else if ($Bchr == '〉' OR $Bchr == '⟩'){ //right angle
-						$Dmaths .= "\\rangle ";
-					} else if ($Bchr == '⌊'){ //left floor
-						$Dmaths .= "\lfloor ";
-					} else if ($Bchr == '⌋'){ //right floor
-						$Dmaths .= "\\rfloor ";
-					} else if ($Bchr == '⌈'){ //left ceil
-						$Dmaths .= "\lceil ";
-					} else if ($Bchr == '⌉'){ //right ceil
-						$Dmaths .= "\\rceil ";
-					} else if ($Bchr == '‖' OR $Bchr == '⟦' OR $Bchr == '⟧'){ //double pipe
-						$Dmaths .= "\Vert ";
-					} else {
-						$Dmaths .= $Bchr;
-					}
-				} else {
-					$Bchr = "(";
-					$Dmaths .= $Bchr;
-				} 
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:d') {
-				if ($Endch == 'Y'){
-					$Endch = '';
-					$Dmaths .= "\\right";
-					if ($Echr == ''){
-						$Dmaths .= ".";
-					} else if ($Echr == '{'){ //left brace
-						$Dmaths .= "\{ ";
-					} else if ($Echr == '}'){ //right brace
-						$Dmaths .= "\} ";
-					} else if ($Echr == '〈' OR $Echr == '⟨'){ //left angle
-						$Dmaths .= "\langle ";
-					} else if ($Echr == '〉' OR $Echr == '⟩'){ //right angle
-						$Dmaths .= "\\rangle ";
-					} else if ($Echr == '⌊'){ //left floor
-						$Dmaths .= "\lfloor ";
-					} else if ($Echr == '⌋'){ //right floor
-						$Dmaths .= "\\rfloor ";
-					} else if ($Echr == '⌈'){ //left ceil
-						$Dmaths .= "\lceil ";
-					} else if ($Echr == '⌉'){ //right ceil
-						$Dmaths .= "\\rceil ";
-					} else if ($Echr == '‖' OR $Echr == '⟦' OR $Echr == '⟧'){ //double pipe
-						$Dmaths .= "\Vert ";
-					} else {
-						$Dmaths .= $Echr." ";
-					}
-				} else {
-					$Echr = ")";
-					$Dmaths .= "\\right";
-					$Dmaths .= $Echr." ";
-				}
-				$Bchr = '';
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:eqArr') {
-				$Mear = 'Y';
-				if ($Begch == ''){
-					$Dmaths .= "\\left.\begin{matrix}";
-				} else {
-					$Dmaths .= "\begin{matrix}";
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:eqArr') {
-				$Mear = '';
-				if ($Endch == ''){
-					$Dmaths .= "\\end{matrix}\\right.";
-				} else {
-					$Dmaths .= "\\end{matrix}";
-				}
-			}
-			if ($Mroot == 0){
-				if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:deg') {
-					$mroot = new XMLReader;
-					$mroot->xml(trim($reader->readOuterXML()));
-					while ($mroot->read()) {
-						if ($mroot->name == 'm:t') { //get level of root 
-							$Tmptext1 = htmlentities($mroot->expand()->textContent);
-							$Mroot .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
-						}
-					}
-					$Mroot = intval($Mroot);
-					$Dmaths .= "\sqrt[".$Mroot."]";
-				}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:degHide') {
-				$Mtroot = $reader->getAttribute("m:val");
-				$Dmaths .= "\sqrt";
-				$Mroot = 2;
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:func') {
-				$Mfunc = 'Y';
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:func') {
-				$Mfunc = '';
-				$Dmaths .= "\,";
-			}
-			if ($MGL == ''){
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:lim') {
-				$mlim = new XMLReader;
-				$mlim->xml(trim($reader->readOuterXML()));
-				while ($mlim->read()) {
-					if ($mlim->name == 'm:t') { //get limit value 
-						$Tmptext1 = htmlentities($mlim->expand()->textContent);
-						$Mlimit .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
-					}
-				}
-			}
-			}
+	// 	$Mintegral = $MintSS = $MIsubL = $MIsupL = $MIsup = $MIsub = $Msub = $Msup = $Echr = $Mlimit = $Mchr = $Bchr = $MuO = $DSmaths = $MaccC = $MaccT = $MaccC = $MGC = $MGL = $Mfunc= $MFnb = $Mear = $Me = $Begch = $Endch = $MdivT = $MuON = $Limpos = $Mmat = $Matpos = $Mmsub = '';
+	// 	$Mroot = $Elevel = $Mden = $Mnum = 0;
+	// 	$MRexp = array();
+	// 	if ($Mpara == 'Y'){
+	// 		$Dmaths = "\[";
+	// 	} else {
+	// 		$Dmaths = "\(";
+	// 	}
+	// 	if ($Malign == 'left'){
+	// 		$Dmaths .= "\begin{flalign}\;";
+	// 	}
+	// 	if ($Malign == 'right'){
+	// 		$Dmaths .= "\begin{flalign} && ";
+	// 	}
+	// 	$node = trim($xml->readOuterXML());
+	// 	$reader = new XMLReader();
+	// 	$reader->XML($node);
+	// 	while ($reader->read()) {
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:naryPr') { //get maths integral funtion
+	// 			$mf = new XMLReader;
+	// 			$mf->xml(trim($reader->readOuterXML()));
+	// 			while ($mf->read()) {
+	// 				if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:chr') { //get integral function type
+	// 					$Mintegral = $mf->getAttribute("m:val");
+	// 				}
+	// 				if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:limLoc') { //get integral function limits
+	// 					$MintSS = $mf->getAttribute("m:val");
+	// 					if ($MintSS == 'undOvr'){
+	// 						$MuO = '\limits';
+	// 					}
+	// 					if ($MintSS == 'subSup'){
+	// 						$MuON = '\nolimits';
+	// 					}
+	// 					if ($MintSS == 'subSup' OR $MintSS == 'undOvr'){
+	// 						$MIsubL = 'Y';
+	// 						$MIsupL = 'Y';
+	// 					} else {
+	// 						$MIsubL = 'N';
+	// 						$MIsupL = 'N';
+	// 					}
+	// 				}
+	// 				if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:subHide') {  
+	// 					$MSbH = $mf->getAttribute("m:val");
+	// 					if ($MSbH == 1){
+	// 						$MIsubL = 'N';
+	// 					}
+	// 				}
+	// 				if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:supHide') {  
+	// 					$MSpH = $mf->getAttribute("m:val");
+	// 					if ($MSpH == 1){
+	// 						$MIsupL = 'N';
+	// 					}
+	// 				}
+	// 				if ($mf->nodeType == XMLREADER::ELEMENT && $mf->name === 'm:grow') { //get integral function limits
+	// 					$Mgrow = $mf->getAttribute("m:val");
+	// 					if ($Mgrow == '1'){
+	// 						$MIsubL = 'Y';
+	// 						$MIsupL = 'Y';
+	// 					} else {
+	// 						$MIsubL = 'N';
+	// 						$MIsupL = 'N';
+	// 					}
+	// 				}
+	// 			}
+	// 			if ($Mintegral == ''){
+	// 				$Dmaths .= "\int".$MuO;
+	// 			} else {
+	// 				if ($Mintegral == '∬'){
+	// 					$Dmaths .= "\iint".$MuO;
+	// 				} else if ($Mintegral == '∭'){
+	// 					$Dmaths .= "\iiint".$MuO;
+	// 				} else if ($Mintegral == '∮'){
+	// 					$Dmaths .= "\oint".$MuO;
+	// 				} else if ($Mintegral == '∯'){
+	// 					$Dmaths .= "\oint\oint".$MuO;
+	// 				} else if ($Mintegral == '∰'){
+	// 					$Dmaths .= "\oint\oint\oint".$MuO;
+	// 				} else if ($Mintegral == '∑'){
+	// 					$Dmaths .= "\sum".$MuON;
+	// 					if ($MIsubL <> 'N'){
+	// 						$MIsubL = 'Y';
+	// 					}
+	// 				} else if ($Mintegral == '∏'){
+	// 					$Dmaths .= "\prod".$MuON;
+	// 				} else if ($Mintegral == '∐'){
+	// 					$Dmaths .= "\coprod".$MuON;
+	// 				} else if ($Mintegral == '⋁'){
+	// 					$Dmaths .= "\bigvee".$MuON;
+	// 				} else if ($Mintegral == '⋀'){
+	// 					$Dmaths .= "\bigwedge".$MuON;
+	// 				} else if ($Mintegral == '⋃'){
+	// 					$Dmaths .= "\bigcup".$MuON;
+	// 				} else if ($Mintegral == '⋂'){
+	// 					$Dmaths .= "\bigcap".$MuON;
+	// 				}
+	// 			}
+	// 			$MuON = $MuO = '';
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sub') { 
+	// 			if ($MIsubL == 'Y'){ //get start of maths subscript
+	// 				$Dmaths .= "_{";
+	// 				$MsubF = 'Y';
+	// 				$MIsub = '';
+	// 			} else if ($MIsubL == 'N'){
+	// 				$Dmaths .= "";
+	// 				$MIsubL = '';
+	// 			} else if ($MIsubL == ''){
+	// 				$Dmaths .= "_{";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sub') {
+	// 			if ($MIsubL == '' OR $MIsubL == 'Y'){
+	// 				$Dmaths .= "}";
+	// 			} else {
+	// 				$MIsubL = '';
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sup') { //get start of maths superscript
+	// 			if ($MIsupL == 'Y'){
+	// 				$Dmaths .= "^{";
+	// 				$MsupF = 'Y';
+	// 				$MIsup = '';
+	// 			} else if ($MIsupL == 'N'){
+	// 				$Dmaths .= "";
+	// 				$MIsupL = '';
+	// 			} else if ($MIsupL == ''){
+	// 				$Dmaths .= "^{";
+	// 			}				
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sup') {
+	// 			if ($MIsupL == '' OR $MIsupL == 'Y'){
+	// 				$Dmaths .= "}";
+	// 			} else {
+	// 				$MIsupL = '';
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:d') {
+	// 			$Bchr = $Echr = $Begch = $Endch = '';
+	// 			$mbrack = new XMLReader;
+	// 			$mbrack->xml(trim($reader->readOuterXML()));
+	// 			while ($mbrack->read()) {
+	// 				if ($mbrack->name == 'm:begChr') { //check for alternative beginning bracket chr 
+	// 					$Bchr = $mbrack->getAttribute("m:val");
+	// 					$Begch = 'Y';
+	// 				}
+	// 				if ($mbrack->name == 'm:endChr') { //check for alternative ending bracket chr 
+	// 					$Echr = $mbrack->getAttribute("m:val");
+	// 					$Endch = 'Y';
+	// 				}
+	// 			}
+	// 			$Dmaths .= "\left";
+	// 			if ($Begch == 'Y'){
+	// 				if ($Bchr == ''){
+	// 					$Dmaths .= ".";
+	// 				} else if ($Bchr == '{'){ //left brace
+	// 					$Dmaths .= "\{ ";
+	// 				} else if ($Bchr == '}'){ //right brace
+	// 					$Dmaths .= "\} ";
+	// 				} else if ($Bchr == '〈' OR $Bchr == '⟨'){ //left angle
+	// 					$Dmaths .= "\langle ";
+	// 				} else if ($Bchr == '〉' OR $Bchr == '⟩'){ //right angle
+	// 					$Dmaths .= "\\rangle ";
+	// 				} else if ($Bchr == '⌊'){ //left floor
+	// 					$Dmaths .= "\lfloor ";
+	// 				} else if ($Bchr == '⌋'){ //right floor
+	// 					$Dmaths .= "\\rfloor ";
+	// 				} else if ($Bchr == '⌈'){ //left ceil
+	// 					$Dmaths .= "\lceil ";
+	// 				} else if ($Bchr == '⌉'){ //right ceil
+	// 					$Dmaths .= "\\rceil ";
+	// 				} else if ($Bchr == '‖' OR $Bchr == '⟦' OR $Bchr == '⟧'){ //double pipe
+	// 					$Dmaths .= "\Vert ";
+	// 				} else {
+	// 					$Dmaths .= $Bchr;
+	// 				}
+	// 			} else {
+	// 				$Bchr = "(";
+	// 				$Dmaths .= $Bchr;
+	// 			} 
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:d') {
+	// 			if ($Endch == 'Y'){
+	// 				$Endch = '';
+	// 				$Dmaths .= "\\right";
+	// 				if ($Echr == ''){
+	// 					$Dmaths .= ".";
+	// 				} else if ($Echr == '{'){ //left brace
+	// 					$Dmaths .= "\{ ";
+	// 				} else if ($Echr == '}'){ //right brace
+	// 					$Dmaths .= "\} ";
+	// 				} else if ($Echr == '〈' OR $Echr == '⟨'){ //left angle
+	// 					$Dmaths .= "\langle ";
+	// 				} else if ($Echr == '〉' OR $Echr == '⟩'){ //right angle
+	// 					$Dmaths .= "\\rangle ";
+	// 				} else if ($Echr == '⌊'){ //left floor
+	// 					$Dmaths .= "\lfloor ";
+	// 				} else if ($Echr == '⌋'){ //right floor
+	// 					$Dmaths .= "\\rfloor ";
+	// 				} else if ($Echr == '⌈'){ //left ceil
+	// 					$Dmaths .= "\lceil ";
+	// 				} else if ($Echr == '⌉'){ //right ceil
+	// 					$Dmaths .= "\\rceil ";
+	// 				} else if ($Echr == '‖' OR $Echr == '⟦' OR $Echr == '⟧'){ //double pipe
+	// 					$Dmaths .= "\Vert ";
+	// 				} else {
+	// 					$Dmaths .= $Echr." ";
+	// 				}
+	// 			} else {
+	// 				$Echr = ")";
+	// 				$Dmaths .= "\\right";
+	// 				$Dmaths .= $Echr." ";
+	// 			}
+	// 			$Bchr = '';
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:eqArr') {
+	// 			$Mear = 'Y';
+	// 			if ($Begch == ''){
+	// 				$Dmaths .= "\\left.\begin{matrix}";
+	// 			} else {
+	// 				$Dmaths .= "\begin{matrix}";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:eqArr') {
+	// 			$Mear = '';
+	// 			if ($Endch == ''){
+	// 				$Dmaths .= "\\end{matrix}\\right.";
+	// 			} else {
+	// 				$Dmaths .= "\\end{matrix}";
+	// 			}
+	// 		}
+	// 		if ($Mroot == 0){
+	// 			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:deg') {
+	// 				$mroot = new XMLReader;
+	// 				$mroot->xml(trim($reader->readOuterXML()));
+	// 				while ($mroot->read()) {
+	// 					if ($mroot->name == 'm:t') { //get level of root 
+	// 						$Tmptext1 = htmlentities($mroot->expand()->textContent);
+	// 						$Mroot .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
+	// 					}
+	// 				}
+	// 				$Mroot = intval($Mroot);
+	// 				$Dmaths .= "\sqrt[".$Mroot."]";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:degHide') {
+	// 			$Mtroot = $reader->getAttribute("m:val");
+	// 			$Dmaths .= "\sqrt";
+	// 			$Mroot = 2;
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:func') {
+	// 			$Mfunc = 'Y';
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:func') {
+	// 			$Mfunc = '';
+	// 			$Dmaths .= "\,";
+	// 		}
+	// 		if ($MGL == ''){
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:lim') {
+	// 			$mlim = new XMLReader;
+	// 			$mlim->xml(trim($reader->readOuterXML()));
+	// 			while ($mlim->read()) {
+	// 				if ($mlim->name == 'm:t') { //get limit value 
+	// 					$Tmptext1 = htmlentities($mlim->expand()->textContent);
+	// 					$Mlimit .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
+	// 				}
+	// 			}
+	// 		}
+	// 		}
 
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:acc') {
-				$macc = new XMLReader;
-				$macc->xml(trim($reader->readOuterXML()));
-				$MaccT = '';
-				while ($macc->read()) {
-					if ($macc->name == 'm:chr') { 
-						$MaccC = $macc->getAttribute("m:val");
-					}
-					if ($macc->name == 'm:t') { //get limit value 
-						$Tmptext1 = htmlentities($macc->expand()->textContent);
-						$MaccT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
-					}
-				}
-				switch($MaccC) {
-					case "̃":
-						$Dmaths .= "\\tilde{".$MaccT."}";
-						break;
-					case "→":
-						$Dmaths .= "\hat{".$MaccT."}";
-						break;
-					case "̌":
-						$Dmaths .= "\check{".$MaccT."}";
-						break;
-					case "→":
-						$Dmaths .= "\vec{".$MaccT."}";
-						break;
-					case "̅":
-						$Dmaths .= "\bar{".$MaccT."}";
-						break;
-					case "́":
-						$Dmaths .= "\acute{".$MaccT."}";
-						break;
-					case "̀":
-						$Dmaths .= "\grave{".$MaccT."}";
-						break;
-					case "̆":
-						$Dmaths .= "\breve{".$MaccT."}";
-						break;
-					case "̇":
-						$Dmaths .= "\dot{".$MaccT."}";
-						break;
-					case "̈":
-						$Dmaths .= "\ddot{".$MaccT."}";
-						break;
-					case "⃛":
-						$Dmaths .= "\dddot{".$MaccT."}";
-						break;
-					case "⃖":
-						$Dmaths .= "\overleftarrow{".$MaccT."}";
-						break;
-					case "⃗":
-						$Dmaths .= "\overrightarrow{".$MaccT."}";
-						break;
-					case "⃡":
-						$Dmaths .= "\overleftrightarrow{".$MaccT."}";
-						break;
-					case "⃐":
-						$Dmaths .= "\overset{\leftharpoonup}{".$MaccT."}";
-						break;
-					case "⃑":
-						$Dmaths .= "\overset{\\rightharpoonup}{".$MaccT."}";
-						break;
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:acc') {
-				$MaccC = '';
-			}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:acc') {
+	// 			$macc = new XMLReader;
+	// 			$macc->xml(trim($reader->readOuterXML()));
+	// 			$MaccT = '';
+	// 			while ($macc->read()) {
+	// 				if ($macc->name == 'm:chr') { 
+	// 					$MaccC = $macc->getAttribute("m:val");
+	// 				}
+	// 				if ($macc->name == 'm:t') { //get limit value 
+	// 					$Tmptext1 = htmlentities($macc->expand()->textContent);
+	// 					$MaccT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
+	// 				}
+	// 			}
+	// 			switch($MaccC) {
+	// 				case "̃":
+	// 					$Dmaths .= "\\tilde{".$MaccT."}";
+	// 					break;
+	// 				case "→":
+	// 					$Dmaths .= "\hat{".$MaccT."}";
+	// 					break;
+	// 				case "̌":
+	// 					$Dmaths .= "\check{".$MaccT."}";
+	// 					break;
+	// 				case "→":
+	// 					$Dmaths .= "\vec{".$MaccT."}";
+	// 					break;
+	// 				case "̅":
+	// 					$Dmaths .= "\bar{".$MaccT."}";
+	// 					break;
+	// 				case "́":
+	// 					$Dmaths .= "\acute{".$MaccT."}";
+	// 					break;
+	// 				case "̀":
+	// 					$Dmaths .= "\grave{".$MaccT."}";
+	// 					break;
+	// 				case "̆":
+	// 					$Dmaths .= "\breve{".$MaccT."}";
+	// 					break;
+	// 				case "̇":
+	// 					$Dmaths .= "\dot{".$MaccT."}";
+	// 					break;
+	// 				case "̈":
+	// 					$Dmaths .= "\ddot{".$MaccT."}";
+	// 					break;
+	// 				case "⃛":
+	// 					$Dmaths .= "\dddot{".$MaccT."}";
+	// 					break;
+	// 				case "⃖":
+	// 					$Dmaths .= "\overleftarrow{".$MaccT."}";
+	// 					break;
+	// 				case "⃗":
+	// 					$Dmaths .= "\overrightarrow{".$MaccT."}";
+	// 					break;
+	// 				case "⃡":
+	// 					$Dmaths .= "\overleftrightarrow{".$MaccT."}";
+	// 					break;
+	// 				case "⃐":
+	// 					$Dmaths .= "\overset{\leftharpoonup}{".$MaccT."}";
+	// 					break;
+	// 				case "⃑":
+	// 					$Dmaths .= "\overset{\\rightharpoonup}{".$MaccT."}";
+	// 					break;
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:acc') {
+	// 			$MaccC = '';
+	// 		}
 
 			
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:borderBox') {
-				$Dmaths .= "\boxed{";
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:borderBox') {
-				$Dmaths .= "}";
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:bar') {
-				$Dmaths .= "\underline{";
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:bar') {
-				$Dmaths .= "}";
-			}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:borderBox') {
+	// 			$Dmaths .= "\boxed{";
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:borderBox') {
+	// 			$Dmaths .= "}";
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:bar') {
+	// 			$Dmaths .= "\underline{";
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:bar') {
+	// 			$Dmaths .= "}";
+	// 		}
 
 
-			if ($MGL == ''){
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:groupChr') {
-				$MGC = 'Y';
-				$MchT = '';
-				$Mpos = $Mchr = '';
-				$mgch = new XMLReader;
-				$mgch->xml(trim($reader->readOuterXML()));
-				while ($mgch->read()) {
-					if ($mgch->name == 'm:chr') { 
-						$Mchr = $mgch->getAttribute("m:val");
-					}
-					if ($mgch->name == 'm:pos') { 
-						$Mpos = $mgch->getAttribute("m:val");
-					}
-					if ($mgch->name == 'm:vertJc' AND $Mpos == '') { 
-						$Mpos = $mgch->getAttribute("m:val");
-					}
-					if ($mgch->name == 'm:t') { 
-						$Tmptext1 = htmlentities($mgch->expand()->textContent);
-						$MchT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
-					}
-				}
-				if ($Mchr == "←" AND $Mpos == 'top'){
-					$Dmaths .= "\xleftarrow[".$MchT."]{ }";
-				} else if ($Mchr == "←" AND $Mpos == 'bot'){
-					$Dmaths .= "\xleftarrow{".$MchT."}\;";
-				} else if ($Mchr == "→" AND $Mpos == 'top'){
-					$Dmaths .= "\xrightarrow[".$MchT."]{ }";
-				} else if ($Mchr == "→" AND $Mpos == 'bot'){
-					$Dmaths .= "\xrightarrow{".$MchT."}\;";
-				} else if ($Mchr == "⇐" AND $Mpos == 'top'){
-					$Dmaths .= "\xLeftarrow[".$MchT."]{ }";
-				} else if ($Mchr == "⇐" AND $Mpos == 'bot'){
-					$Dmaths .= "\xLeftarrow{".$MchT."}\;";
-				} else if ($Mchr == "⇒" AND $Mpos == 'top'){
-					$Dmaths .= "\xRightarrow[".$MchT."]{ }";
-				} else if ($Mchr == "⇒" AND $Mpos == 'bot'){
-					$Dmaths .= "\xRightarrow{".$MchT."}\;";
-				} else if ($Mchr == "↔" AND $Mpos == 'top'){
-					$Dmaths .= "\xleftrightarrow[".$MchT."]{ }";
-				} else if ($Mchr == "↔" AND $Mpos == 'bot'){
-					$Dmaths .= "\xleftrightarrow{".$MchT."}\;";
-				} else if ($Mchr == "⇔" AND $Mpos == 'top'){
-					$Dmaths .= "\xLeftrightarrow[".$MchT."]{ }";
-				} else if ($Mchr == "⇔" AND $Mpos == 'bot'){
-					$Dmaths .= "\xLeftrightarrow{".$MchT."}\;";
-				} else if ($Mchr == "⏞" AND $Mpos == 'top'){
-					$Dmaths .= "\overbrace{".$MchT."}";
-				} else if ($Mchr == "" AND $Mpos == ''){
-					$Dmaths .= "\underbrace{".$MchT."}\;";
-				}
-			}
-			}
+	// 		if ($MGL == ''){
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:groupChr') {
+	// 			$MGC = 'Y';
+	// 			$MchT = '';
+	// 			$Mpos = $Mchr = '';
+	// 			$mgch = new XMLReader;
+	// 			$mgch->xml(trim($reader->readOuterXML()));
+	// 			while ($mgch->read()) {
+	// 				if ($mgch->name == 'm:chr') { 
+	// 					$Mchr = $mgch->getAttribute("m:val");
+	// 				}
+	// 				if ($mgch->name == 'm:pos') { 
+	// 					$Mpos = $mgch->getAttribute("m:val");
+	// 				}
+	// 				if ($mgch->name == 'm:vertJc' AND $Mpos == '') { 
+	// 					$Mpos = $mgch->getAttribute("m:val");
+	// 				}
+	// 				if ($mgch->name == 'm:t') { 
+	// 					$Tmptext1 = htmlentities($mgch->expand()->textContent);
+	// 					$MchT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
+	// 				}
+	// 			}
+	// 			if ($Mchr == "←" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xleftarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "←" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xleftarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "→" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xrightarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "→" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xrightarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "⇐" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xLeftarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "⇐" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xLeftarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "⇒" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xRightarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "⇒" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xRightarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "↔" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xleftrightarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "↔" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xleftrightarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "⇔" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\xLeftrightarrow[".$MchT."]{ }";
+	// 			} else if ($Mchr == "⇔" AND $Mpos == 'bot'){
+	// 				$Dmaths .= "\xLeftrightarrow{".$MchT."}\;";
+	// 			} else if ($Mchr == "⏞" AND $Mpos == 'top'){
+	// 				$Dmaths .= "\overbrace{".$MchT."}";
+	// 			} else if ($Mchr == "" AND $Mpos == ''){
+	// 				$Dmaths .= "\underbrace{".$MchT."}\;";
+	// 			}
+	// 		}
+	// 		}
 
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:groupChr') {
-				$MGC = '';
-			}
-			if ($Mfunc == ''){
-			if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limUpp') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limLow')) {
-				$MLchr = $MLpos = $mlim = $MluT = $MlimT = '';
-				$MGL = 'Y';
-				$mlup = new XMLReader;
-				$mlup->xml(trim($reader->readOuterXML()));
-				while ($mlup->read()) {
-					if ($mlup->name == 'm:chr') { 
-						$MLchr = $mlup->getAttribute("m:val");
-					}
-					if ($mlup->name == 'm:pos') { 
-						$MLpos = $mlup->getAttribute("m:val");
-					}
-					if ($mlup->name == 'm:lim') { 
-						$mlim = 'Y';
-					}
-					if ($mlim == ''){
-						if ($mlup->name == 'm:t') { 
-							$Tmptext1 = htmlentities($mlup->expand()->textContent);
-							$MluT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
-						}
-					}
-					if ($mlim == 'Y'){
-						if ($mlup->name == 'm:t') { 
-							$Tmptext2 = htmlentities($mlup->expand()->textContent);
-							$MlimT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext2);
-						}
-					}
-				}
-				if ($MLchr == ''){
-					$Dmaths .= "\underbrace{".$MluT ."}_\\text{".$MlimT."}";
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:groupChr') {
+	// 			$MGC = '';
+	// 		}
+	// 		if ($Mfunc == ''){
+	// 		if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limUpp') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limLow')) {
+	// 			$MLchr = $MLpos = $mlim = $MluT = $MlimT = '';
+	// 			$MGL = 'Y';
+	// 			$mlup = new XMLReader;
+	// 			$mlup->xml(trim($reader->readOuterXML()));
+	// 			while ($mlup->read()) {
+	// 				if ($mlup->name == 'm:chr') { 
+	// 					$MLchr = $mlup->getAttribute("m:val");
+	// 				}
+	// 				if ($mlup->name == 'm:pos') { 
+	// 					$MLpos = $mlup->getAttribute("m:val");
+	// 				}
+	// 				if ($mlup->name == 'm:lim') { 
+	// 					$mlim = 'Y';
+	// 				}
+	// 				if ($mlim == ''){
+	// 					if ($mlup->name == 'm:t') { 
+	// 						$Tmptext1 = htmlentities($mlup->expand()->textContent);
+	// 						$MluT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext1);
+	// 					}
+	// 				}
+	// 				if ($mlim == 'Y'){
+	// 					if ($mlup->name == 'm:t') { 
+	// 						$Tmptext2 = htmlentities($mlup->expand()->textContent);
+	// 						$MlimT .= preg_replace('~(?<=\s)\s~', '&nbsp;', $Tmptext2);
+	// 					}
+	// 				}
+	// 			}
+	// 			if ($MLchr == ''){
+	// 				$Dmaths .= "\underbrace{".$MluT ."}_\\text{".$MlimT."}";
 					
-				} else {
-					$Dmaths .= "\overbrace{".$MluT ."}^\\text{".$MlimT."}";
-				}
-			}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limUpp'){
-				$Limpos = 'top';				
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limLow'){
-				$Limpos = 'bot';				
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:limUpp' OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:limLow')) {
-				$MGL = '';
-			}
-			if (($Me == 'Y' OR $Me == '2') AND $Mmat == '') {
-				if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:e') AND $Mear =='' AND $Bchr <> '') {
-					$Dmaths .= " | ";
-					$Me = '';
-				}
-				if ($Me == 'Y'){
-					$Me = '2';
-				} else {
-					$Me = '';
-				}
-			}		
+	// 			} else {
+	// 				$Dmaths .= "\overbrace{".$MluT ."}^\\text{".$MlimT."}";
+	// 			}
+	// 		}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limUpp'){
+	// 			$Limpos = 'top';				
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:limLow'){
+	// 			$Limpos = 'bot';				
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:limUpp' OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:limLow')) {
+	// 			$MGL = '';
+	// 		}
+	// 		if (($Me == 'Y' OR $Me == '2') AND $Mmat == '') {
+	// 			if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:e') AND $Mear =='' AND $Bchr <> '') {
+	// 				$Dmaths .= " | ";
+	// 				$Me = '';
+	// 			}
+	// 			if ($Me == 'Y'){
+	// 				$Me = '2';
+	// 			} else {
+	// 				$Me = '';
+	// 			}
+	// 		}		
 					
 
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:e') {
-				++$Elevel;
-				if ($Mroot <> 0){
-					$MRexp[$Elevel] = 'Y';
-					$Mroot = 0;
-					$Dmaths .= "{";
-				}
-				if ($Mlimit <> ''){
-					if($Limpos == 'top'){
-						$Dmaths .= "^{".$Mlimit."}";
-					} else {
-						$Dmaths .= "_{".$Mlimit."}";
-					}
-					$Mlimit = '';
-					$Limpos = '';
-				}
-				if ($Mmat == 'Y' AND $Mmsub == ''){
-					if ($Matpos == 'E'){
-						$Dmaths .= " & ";
-					}
-					$Matpos = 'E';
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:e') {
-				if (isset($MRexp[$Elevel])){
-					if ($MRexp[$Elevel] == 'Y'){
-						$Dmaths .= "}";
-						$MRexp[$Elevel] = '';		
-					}					
-				}
-				if ($Mear == 'Y'){
-					$Dmaths .= "\\\ ";
-				}
-				--$Elevel;
-				$Me = 'Y';
-			}
-			if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSub') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSubSup') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSup')) {
-				$Mmsub = 'Y';
-			}
-			if (($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSub') OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSubSup') OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSup')) {
-				$Mmsub = '';
-			}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:e') {
+	// 			++$Elevel;
+	// 			if ($Mroot <> 0){
+	// 				$MRexp[$Elevel] = 'Y';
+	// 				$Mroot = 0;
+	// 				$Dmaths .= "{";
+	// 			}
+	// 			if ($Mlimit <> ''){
+	// 				if($Limpos == 'top'){
+	// 					$Dmaths .= "^{".$Mlimit."}";
+	// 				} else {
+	// 					$Dmaths .= "_{".$Mlimit."}";
+	// 				}
+	// 				$Mlimit = '';
+	// 				$Limpos = '';
+	// 			}
+	// 			if ($Mmat == 'Y' AND $Mmsub == ''){
+	// 				if ($Matpos == 'E'){
+	// 					$Dmaths .= " & ";
+	// 				}
+	// 				$Matpos = 'E';
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:e') {
+	// 			if (isset($MRexp[$Elevel])){
+	// 				if ($MRexp[$Elevel] == 'Y'){
+	// 					$Dmaths .= "}";
+	// 					$MRexp[$Elevel] = '';		
+	// 				}					
+	// 			}
+	// 			if ($Mear == 'Y'){
+	// 				$Dmaths .= "\\\ ";
+	// 			}
+	// 			--$Elevel;
+	// 			$Me = 'Y';
+	// 		}
+	// 		if (($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSub') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSubSup') OR ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:sSup')) {
+	// 			$Mmsub = 'Y';
+	// 		}
+	// 		if (($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSub') OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSubSup') OR ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:sSup')) {
+	// 			$Mmsub = '';
+	// 		}
 
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:type') {
-				$Mtype = $reader->getAttribute("m:val");
-				if ($Mtype == 'noBar'){
-					$MFnb = 'Y';
-				}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT	&& $reader->name == 'm:type') {
-				$MdivT = $reader->getAttribute("m:val");
-			}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:type') {
+	// 			$Mtype = $reader->getAttribute("m:val");
+	// 			if ($Mtype == 'noBar'){
+	// 				$MFnb = 'Y';
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT	&& $reader->name == 'm:type') {
+	// 			$MdivT = $reader->getAttribute("m:val");
+	// 		}
 		
-			if ($reader->nodeType == XMLREADER::ELEMENT	&& $reader->name == 'm:num') {
-				++$Mnum;
-				if ($MFnb == 'Y'){
-					$Dmaths .= "{{";
-				} else if ($MdivT == 'lin'){
-					$Dmaths .= " {";
-				} else if ($MdivT == 'skw'){
-					$Dmaths .= " \\raise 4pt {";
-				} else {
-					$Dmaths .= " \\frac{";
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:num') {
-				--$Mnum;
-				if ($MdivT == 'lin' OR $MdivT == 'skw'){
-				$Dmaths .= "} / ";
-				} else {
-				$Dmaths .= "}";
-				}
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:den') {
-				++$Mden;
-				if ($MFnb == 'Y'){
-					$Dmaths .= "\atop{";
-				} else if ($MdivT == 'skw'){
-					$Dmaths .= " \lower 4pt {";
-				} else {
-					$Dmaths .= "{";
-				}
-				$MdivT = '';
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:den') {
-				--$Mden;
-				if ($MFnb == 'Y'){
-					$Dmaths .= "}}";
-				} else {
-					$Dmaths .= "}";
-				}
-				$MFnb = '';
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:m') { // find matrix
-				$Mmat = 'Y';
-				$Dmaths .= "\begin{matrix}";
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:m') { // find end of matrix
-				$Dmaths .= " \\end{matrix}";
-				$Mmat = '';
-				$Matpos = '';
-			}
-			if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:mr') { // find start of matrix row
-				if ($Matpos == 'R'){
-					$Dmaths .= "\\\ ";
-				}
-			}
-			if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:mr') { // find end of matrix row
-				$Matpos = 'R';
-			}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT	&& $reader->name == 'm:num') {
+	// 			++$Mnum;
+	// 			if ($MFnb == 'Y'){
+	// 				$Dmaths .= "{{";
+	// 			} else if ($MdivT == 'lin'){
+	// 				$Dmaths .= " {";
+	// 			} else if ($MdivT == 'skw'){
+	// 				$Dmaths .= " \\raise 4pt {";
+	// 			} else {
+	// 				$Dmaths .= " \\frac{";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:num') {
+	// 			--$Mnum;
+	// 			if ($MdivT == 'lin' OR $MdivT == 'skw'){
+	// 			$Dmaths .= "} / ";
+	// 			} else {
+	// 			$Dmaths .= "}";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:den') {
+	// 			++$Mden;
+	// 			if ($MFnb == 'Y'){
+	// 				$Dmaths .= "\atop{";
+	// 			} else if ($MdivT == 'skw'){
+	// 				$Dmaths .= " \lower 4pt {";
+	// 			} else {
+	// 				$Dmaths .= "{";
+	// 			}
+	// 			$MdivT = '';
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:den') {
+	// 			--$Mden;
+	// 			if ($MFnb == 'Y'){
+	// 				$Dmaths .= "}}";
+	// 			} else {
+	// 				$Dmaths .= "}";
+	// 			}
+	// 			$MFnb = '';
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:m') { // find matrix
+	// 			$Mmat = 'Y';
+	// 			$Dmaths .= "\begin{matrix}";
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:m') { // find end of matrix
+	// 			$Dmaths .= " \\end{matrix}";
+	// 			$Mmat = '';
+	// 			$Matpos = '';
+	// 		}
+	// 		if ($reader->nodeType == XMLREADER::ELEMENT && $reader->name == 'm:mr') { // find start of matrix row
+	// 			if ($Matpos == 'R'){
+	// 				$Dmaths .= "\\\ ";
+	// 			}
+	// 		}
+	// 		if ($reader->nodeType <> XMLREADER::ELEMENT && $reader->name == 'm:mr') { // find end of matrix row
+	// 			$Matpos = 'R';
+	// 		}
 
-			if ($Mroot == 0 AND $Mlimit == '' AND $MaccC == '' AND $MGC == '' AND $MGL == ''){
-				if ($reader->name == 'm:t') { //get maths text 
-					$Tmptext1 = htmlentities($reader->expand()->textContent);
-					$MItext = preg_replace('~(?<=\s)\s~', '\;', $Tmptext1);
-					$MItext = str_replace(' ','\;',$MItext);
-					if ($Mfunc <> ''){
-						if ($MItext == 'ln'){
-							$Dmaths .= '\ln';
-						} else if ($MItext == 'sin'){
-							$Dmaths .= '\sin';
-						} else if ($MItext == 'cos'){
-							$Dmaths .= '\cos';
-						} else if ($MItext == 'tan'){
-							$Dmaths .= '\tan';
-						} else if ($MItext == 'sinh'){
-							$Dmaths .= '\sinh';
-						} else if ($MItext == 'cosh'){
-							$Dmaths .= '\cosh';
-						} else if ($MItext == 'tanh'){
-							$Dmaths .= '\tanh';
-						} else if ($MItext == 'csch'){
-							$Dmaths .= '\textnormal{csch}\,';
-						} else if ($MItext == 'sech'){
-							$Dmaths .= '\textnormal{sech}\,';
-						} else if ($MItext == 'coth'){
-							$Dmaths .= '\coth';
-						} else if ($MItext == 'csc'){
-							$Dmaths .= '\csc';
-						} else if ($MItext == 'sec'){
-							$Dmaths .= '\sec';
-						} else if ($MItext == 'cot'){
-							$Dmaths .= '\cot';
-						} else if ($MItext == 'min'){
-							$Dmaths .= '\min';
-						} else if ($MItext == 'max'){
-							$Dmaths .= '\max';
-						} else if ($MItext == 'lim'){
-							$Dmaths .= '\lim';
-						} else if ($MItext == 'log'){
-							$Dmaths .= '\log';
-						} else {
-							if ($MItext <> ''){
-								$Dmaths .= "{".$MItext."}";	
-							}								
-						}
-					} else {
-						$MIt1 = str_replace('{','\\{',$MItext);
-						$MIt2 = str_replace('}','\\}',$MIt1);
-						$Dmaths .= $MIt2;
-					}
-				}
-			}
+	// 		if ($Mroot == 0 AND $Mlimit == '' AND $MaccC == '' AND $MGC == '' AND $MGL == ''){
+	// 			if ($reader->name == 'm:t') { //get maths text 
+	// 				$Tmptext1 = htmlentities($reader->expand()->textContent);
+	// 				$MItext = preg_replace('~(?<=\s)\s~', '\;', $Tmptext1);
+	// 				$MItext = str_replace(' ','\;',$MItext);
+	// 				if ($Mfunc <> ''){
+	// 					if ($MItext == 'ln'){
+	// 						$Dmaths .= '\ln';
+	// 					} else if ($MItext == 'sin'){
+	// 						$Dmaths .= '\sin';
+	// 					} else if ($MItext == 'cos'){
+	// 						$Dmaths .= '\cos';
+	// 					} else if ($MItext == 'tan'){
+	// 						$Dmaths .= '\tan';
+	// 					} else if ($MItext == 'sinh'){
+	// 						$Dmaths .= '\sinh';
+	// 					} else if ($MItext == 'cosh'){
+	// 						$Dmaths .= '\cosh';
+	// 					} else if ($MItext == 'tanh'){
+	// 						$Dmaths .= '\tanh';
+	// 					} else if ($MItext == 'csch'){
+	// 						$Dmaths .= '\textnormal{csch}\,';
+	// 					} else if ($MItext == 'sech'){
+	// 						$Dmaths .= '\textnormal{sech}\,';
+	// 					} else if ($MItext == 'coth'){
+	// 						$Dmaths .= '\coth';
+	// 					} else if ($MItext == 'csc'){
+	// 						$Dmaths .= '\csc';
+	// 					} else if ($MItext == 'sec'){
+	// 						$Dmaths .= '\sec';
+	// 					} else if ($MItext == 'cot'){
+	// 						$Dmaths .= '\cot';
+	// 					} else if ($MItext == 'min'){
+	// 						$Dmaths .= '\min';
+	// 					} else if ($MItext == 'max'){
+	// 						$Dmaths .= '\max';
+	// 					} else if ($MItext == 'lim'){
+	// 						$Dmaths .= '\lim';
+	// 					} else if ($MItext == 'log'){
+	// 						$Dmaths .= '\log';
+	// 					} else {
+	// 						if ($MItext <> ''){
+	// 							$Dmaths .= "{".$MItext."}";	
+	// 						}								
+	// 					}
+	// 				} else {
+	// 					$MIt1 = str_replace('{','\\{',$MItext);
+	// 					$MIt2 = str_replace('}','\\}',$MIt1);
+	// 					$Dmaths .= $MIt2;
+	// 				}
+	// 			}
+	// 		}
 
-		}
-		if ($Malign == 'left'){
-			$Dmaths .= " && \\end{flalign}";
-		}
-		if ($Malign == 'right'){
-			$Dmaths .= "\;\\end{flalign}";
-		}
-		if ($Mpara == 'Y'){
-			$Dmaths .= "\]";
-		} else {
-			$Dmaths .= "\)";
-		}
-		return $Dmaths;
-	}
+	// 	}
+	// 	if ($Malign == 'left'){
+	// 		$Dmaths .= " && \\end{flalign}";
+	// 	}
+	// 	if ($Malign == 'right'){
+	// 		$Dmaths .= "\;\\end{flalign}";
+	// 	}
+	// 	if ($Mpara == 'Y'){
+	// 		$Dmaths .= "\]";
+	// 	} else {
+	// 		$Dmaths .= "\)";
+	// 	}
+	// 	return $Dmaths;
+	// }
 
 
 // ------------------- START OF TABLE PROCESSING ------------------------
@@ -2953,8 +2978,8 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 		
 		$reader = new XMLReader();
 		$reader->XML($this->doc_xml->saveXML());
-		$text = "<div style='position:fixed; bottom:50vh; right:10px; border:2px solid black; padding:2px; min-width:3%; text-align:center; background-color:#eeeeee';><a href='#top'>Top</a></div>";
-		$text .= "<div style='margin:10px;'>"; // Provide a small margin around the html output
+		// $text = "<div style='position:fixed; bottom:50vh; right:10px; border:2px solid black; padding:2px; min-width:3%; text-align:center; background-color:#eeeeee';><a href='#top'>Top</a></div>";
+		$text = "<div class='book' style='padding:20px;'><div class='page' data-page='1'>"; // Provide a small margin around the html output
 		while ($reader->read()) {
 		// look for new paragraphs or table
 			$paragraph = new XMLReader;
@@ -2971,40 +2996,40 @@ class WordPHP // Version v2.1.11 - Timothy Edwards - 8 Sept 2023
 				$reader->next();
 			}
 		}
-		$Foot = $this->footnotes(); // Get any Footnotes in the document
-		if (isset($Foot[1])) {
-			$text .= "<br>&nbsp;";
-			$text .= "<hr><p style='margin-top:6px;margin-bottom:6px;'><b>FOOTNOTES</b></p>";
-			$Fcount = 1;
-			while (isset($Foot[$Fcount])){
-				$text .= "<p style='padding-left:50px;text-indent:-50px;margin-top:6px;margin-bottom:6px;'><sup><a id='FN".$Fcount."' href='#FN".$Fcount."R'>[".$Fcount."]</a></sup>&nbsp;&nbsp;&nbsp;".$Foot[$Fcount]."</p>";
-				++$Fcount;
-			}
-		}
+		// $Foot = $this->footnotes(); // Get any Footnotes in the document
+		// if (isset($Foot[1])) {
+		// 	$text .= "<br>&nbsp;";
+		// 	$text .= "<hr><p style='margin-top:6px;margin-bottom:6px;'><b>FOOTNOTES</b></p>";
+		// 	$Fcount = 1;
+		// 	while (isset($Foot[$Fcount])){
+		// 		$text .= "<p style='padding-left:50px;text-indent:-50px;margin-top:6px;margin-bottom:6px;'><sup><a id='FN".$Fcount."' href='#FN".$Fcount."R'>[".$Fcount."]</a></sup>&nbsp;&nbsp;&nbsp;".$Foot[$Fcount]."</p>";
+		// 		++$Fcount;
+		// 	}
+		// }
 		
-		$Endn = $this->endnotes(); //Get any Endnotes in the document
-		if (isset($Endn[1])) {
-			$text .= "<br>&nbsp;";
-			$text .= "<hr><p style='margin-top:6px;margin-bottom:6px;'><b>ENDNOTES</b></p>";
-			$Fcount = 1;
-			while (isset($Endn[$Fcount])){
-				$text .= "<p style='padding-left:50px;text-indent:-50px; margin-top:6px;margin-bottom:6px;'><sup><a id='EN".$Fcount."' href='#EN".$Fcount."R'>[".$this->numberToRoman($Fcount)."]</a></sup>&nbsp;&nbsp;&nbsp;".$Endn[$Fcount]."</p>";
-				++$Fcount;
-			}
-		}
+		// $Endn = $this->endnotes(); //Get any Endnotes in the document
+		// if (isset($Endn[1])) {
+		// 	$text .= "<br>&nbsp;";
+		// 	$text .= "<hr><p style='margin-top:6px;margin-bottom:6px;'><b>ENDNOTES</b></p>";
+		// 	$Fcount = 1;
+		// 	while (isset($Endn[$Fcount])){
+		// 		$text .= "<p style='padding-left:50px;text-indent:-50px; margin-top:6px;margin-bottom:6px;'><sup><a id='EN".$Fcount."' href='#EN".$Fcount."R'>[".$this->numberToRoman($Fcount)."]</a></sup>&nbsp;&nbsp;&nbsp;".$Endn[$Fcount]."</p>";
+		// 		++$Fcount;
+		// 	}
+		// }
 		$text .= "<br>&nbsp;";
 		
-		$text .= "</div>";
+		$text .= "</div></div>";
 		$reader->close();
 		if($this->debug) {  // if in DEBUG mode, display the generated HTML text of the DOCX document
 			echo "<div style='width:100%;'>";
 			echo mb_convert_encoding($text, $this->encoding);
 			echo "</div>";
 		}
-		if ($this->Maths == 'Y'){ // add in the Mathjax script if required
-			$Mtext = "<script>\n MathJax = {  loader: {load: ['[tex]/mathtools']},\n tex: {packages: {'[+]': ['mathtools']}}, };\n </script>\n <script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\">\n </script>\n";
-			$text = $Mtext."\n".$text;
-		}
+		// if ($this->Maths == 'Y'){ // add in the Mathjax script if required
+		// 	$Mtext = "<script>\n MathJax = {  loader: {load: ['[tex]/mathtools']},\n tex: {packages: {'[+]': ['mathtools']}}, };\n </script>\n <script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\">\n </script>\n";
+		// 	$text = $Mtext."\n".$text;
+		// }
 		if ($this->Hcss == 'Y'){
 			$Htext = "<!DOCTYPE html>\n <html lang=\"en\">\n <head>\n <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n <LINK REL=\"STYLESHEET\" TYPE=\"text/css\" HREF=\"/word-htm.css?id=<?= time() ?>\" media=\"screen\">\n </head>\n\n <body>\n ";
 			$text = $Htext.$text."\n </body>\n";
