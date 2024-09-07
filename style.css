@@ -304,3 +304,7 @@ a {
   background-color: black;
   border-color: black;
 }
+
+.swiper-wrapp {
+  width: 100%;
+}
