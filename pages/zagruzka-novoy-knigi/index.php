@@ -6,7 +6,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
 ?>
 
 <main class="main books-page test_block">
-<div class="main_panel">
+  <div class="main_panel">
     <div class="panel">
       <a href="men_about.html" class="panel_link top ">О гаданиях</a>
       <a href="men_test.html" class="panel_link top">Личностные тесты </a>
@@ -42,7 +42,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
         </label>
 
 
-        <input class="input _req _file" type="file" name="file" id="file">        
+        <input class="input _req _file" type="file" name="file" id="file">
         <input class="open-btn" type="submit" value="Открыть просмотр">
       </form>
 
@@ -65,6 +65,15 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
       <h2 class="title">Содержание книги:</h2>
       <div id="result" class="">
 
+
+      </div>
+      <div class="books__navigation">
+        <input type="number" min="1" value="1" class="books__number">
+        <div class="books__pagination">
+          <button class="books__pagination-item books__pagination-item_prev">
+            < назад</span>
+              <button class="books__pagination-item books__pagination-item_next">вперед ></button>
+        </div>
 
       </div>
     </div>

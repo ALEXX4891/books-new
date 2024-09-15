@@ -177,7 +177,7 @@ body.hidden {
 
 /*------------ Шапка страницы ------------*/
 header {
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
   z-index: 150;
@@ -1468,7 +1468,7 @@ a {
   /* aspect-ratio: attr(width) / attr(height); */
   padding: 0 !important;
   height: min-content;
-
+  max-width: 100%;
 }
 
 .imgWrap img {
@@ -1482,9 +1482,9 @@ a {
   /* margin: 0 auto; */
   /* max-width: 100%; */
   /* overflow-y: auto; */
-  padding: 60px;
+  padding: 20px 60px;
   position: relative;
-  min-height: 100vh;
+  /* height: calc(100vh - 100px); */
 }
 
 .container_save {
@@ -1693,11 +1693,12 @@ a {
 }
 
 .books__title {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-align: center;
-  font-size: 40px;
+  font-size: 22px;
   font-weight: 700;
   color: #fff;
+  line-height: 100%;
 }
 
 .page-title {
@@ -1722,7 +1723,7 @@ a {
 
 @media (max-width: 768px) {
   .container {
-    padding: 30px 15px;
+    padding: 15px 15px;
   }
 }
 
@@ -1759,7 +1760,7 @@ a {
 }
  
 .main {
-  /* margin-top: 141px; */
+  /* border-top: 60px solid transparent; */
 }
 
 .books-page .categories__title {
@@ -1824,3 +1825,79 @@ a {
   padding: 10px;
 }
 
+.books {
+  /* max-height: 100%; */
+  overflow: auto;
+  position: relative;
+  height: 100vh;
+  /* display: grid; */
+}
+
+.books__select {
+  color: #000;
+  position: sticky;
+  top: 90px;
+  z-index: 10000;
+  width: 100%;
+  padding: 0 50px;
+}
+
+.books__select option {
+  width: 90%;
+}
+
+.books .books__title {
+  color: #000;
+}
+
+.books .books__title {
+  color: #000;
+}
+
+.books__navigation {
+  position: sticky;
+  bottom: 15px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center
+}
+
+.books__pagination {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.books__pagination-item {
+  color: #000;
+  padding: 5px 10px;
+  background: rgba(256 256 256 / 50%);
+  transition: color 0.3s ease;
+
+
+}
+
+.books__pagination-item:hover {
+  color: #2740ce;
+}
+
+.books__number {
+  padding: 5px 5px 5px 20px;
+  background: rgba(256 256 256 / 50%);
+}
+
+.books__content {
+  overflow: auto;
+  height: 100%;
+}
+
+.books__container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}

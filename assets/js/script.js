@@ -1,165 +1,3 @@
-// // ---------------------------------- start отправка и валидация формы ----------------------------------
-
-// const form = document.querySelector("#docx-form");
-// if (form) {
-//   form.addEventListener("submit", sendForm);
-
-//   async function sendForm(e) {
-//     e.preventDefault();
-
-//     let error = formvalidation(form);
-
-//     if (error === 0) {
-//       form.classList.add("_sending");
-//       let formData = new FormData(form);
-
-//         // // проверка данных в formData:
-//         // for (let value of formData.entries()) {
-//         //   console.log(value);
-//         // }
-
-//       let response = await fetch("/backend/parser.php", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       if (response.ok) {
-//         // console.log(document.querySelector("#result"));
-//         // console.log(response);
-//         let result = await response.json();
-//         // console.log(result);
-//         document.querySelector("#result").innerHTML = result;
-//         form.reset();
-//         // popupOpen(document.getElementById("success"));
-//         form.classList.remove("_sending");
-//       } else {
-//         // popupOpen(document.getElementById("error"));
-//         form.classList.remove("_sending");
-//       }
-//     } else {
-//       alert("Заполните обязательные поля");
-//     }
-//   }
-
-//     //   .then((response) => response.text())
-//     // .then((data) => {
-//     // });
-
-//   function formvalidation(item) {
-//     let error = 0;
-//     let formReq = item.querySelectorAll("._req");
-
-//     for (let index = 0; index < formReq.length; index++) {
-//       const input = formReq[index];
-
-//       formRemoveError(input);
-
-//       if (input.classList.contains("_email")) {
-//         if (emailTest(input)) {
-//           formAddError(input);
-//           error++;
-//         }
-//       } else if (input.getAttribute("type") === "checkbox" && input.checked === false) {
-//         formAddError(input);
-//         error++;
-//       } else {
-//         if (input.value === "") {
-//           formAddError(input);
-//           error++;
-//         }
-//       }
-//     }
-//     return error;
-//   }
-
-//   function formAddError(input) {
-//     input.parentElement.classList.add("_error");
-//     input.classList.add("_error");
-//   }
-
-//   function formRemoveError(input) {
-//     input.parentElement.classList.remove("_error");
-//     input.classList.remove("_error");
-//   }
-
-//   function emailTest(input) {
-//     return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
-//   }
-// }
-
-// // ---------------------------------- end отправка и валидация формы ----------------------------------
-
-// new Swiper(".slider_swiper", {
-//   pagination: {
-//     el: ".swiper-pagination",
-//     clickable: true,
-//     renderBullet: function (index, className) {
-//       return '<span class="' + className + '">' + (index + 1) + "</span>";
-//     },
-//   },
-// });
-const allBooksLink = document.querySelector(".all-btn");
-const slider = document.querySelector(".slider_swiper");
-// console.log(slider.querySelector('swiper-slide'));
-function sliderInit() {
-  // console.log("sliderInit");
-  new Swiper(".slider_swiper", {
-    // Optional parameters
-    direction: "horizontal",
-    // direction: "vertical",
-    autoHeight: true,
-
-    // loop: true,
-    // allowTouchMove: true,
-    slidesPerView: "auto", // сколько слайдов показывать, можно дробно
-    // slidesPerView: 1, // сколько слайдов показывать, можно дробно
-    // slidersPerGroup: 3, // сколько слайдов в группе
-    centeredSlides: true, //выравнивание слайдов по центру
-    // initialSlide: 0, //начальный слайд (c нуля)
-
-    spaceBetween: 40,
-    slideToClickedSlide: true, //перелистывание слайдов по клику
-    grabCursor: true, //меняет курсор при наведении на руку
-    // watchOverflow: true, //отключает слайдер если все слайды входят в область видимости
-
-    // Navigation arrows
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    pagination: {
-      // el: ".swiper-pagination",
-      // clickable: true,
-      // type: "fraction",
-      el: ".swiper-pagination",
-      clickable: true,
-      renderBullet: function (index, className) {
-        return '<span class="' + className + '">' + (index + 1) + "</span>";
-      },
-    },
-    // mousewheel: { //перелистывание слайдов по мышке
-    //   sensitivity: 1,
-    //   eventsTarget: ".slider_swiper",
-    // },
-    // keyboard: { //перелистывание слайдов по нажатию клавиш
-    //   enabled: true,
-    //   onlyInViewport: true,
-    //   // pageUpDown: true,
-    // },
-    breakpoints: {
-      0: {
-        // slidesPerView: 1,
-      },
-      500: {
-        // slidesPerView: 2,
-      },
-      800: {
-        // slidesPerView: 3.35,
-      },
-    },
-  });
-}
-
 const formSave = document.getElementById("save-form");
 
 const formDocx = document.getElementById("docx-form");
@@ -190,15 +28,16 @@ if (formDocx) {
         // popupOpen(document.getElementById("success"));
         formDocx.classList.remove("_sending");
 
-        if (result == 'Ошибка: неверный пароль!') {
+        if (result == "Ошибка: неверный пароль!") {
           alert(result);
         } else {
           document.querySelector(".result-wrap").style.display = "block";
           // document.querySelector(".result-wrap").innerHTML = result;
-  
+
           document.getElementById("result").innerHTML = result;
-          console.log(result);
-  
+          // console.log(result);
+          showPage();
+
           // sliderInit();
           showSaveForm();
         }
@@ -336,7 +175,7 @@ function showDocxForm() {
 
 const booksPage = document.querySelector(".books-page");
 if (booksPage) {
-  console.log("booksPage");
+  // console.log("booksPage");
   const categories = document.querySelectorAll(".categories__item");
   categories.forEach((item) => {
     item.addEventListener("click", () => {
@@ -361,4 +200,211 @@ if (booksPage) {
       });
     });
   });
+}
+
+window.addEventListener("load", () => {  
+  const book = document.querySelector(".books");
+  if (book) {
+
+    const body = document.querySelector("body");
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
+    const main = document.querySelector("main");
+    body.style.margin = "0";
+    body.style.display = "grid";
+    body.style.gridTemplateRows = "auto 1fr auto";
+    body.style.height = "100vh";
+    header.style.display = "none";
+    footer.style.display = "none";
+
+    const pages = book.querySelectorAll(".page");
+    const input = document.querySelector(".books__number");    
+    input.setAttribute("max", pages.length);
+    const bntPrev = document.querySelector(".books__pagination-item_prev");
+    const bntNext = document.querySelector(".books__pagination-item_next");
+    let pageNumber = 1;
+    
+
+    pages.forEach((page) => {
+      if (page.getAttribute("data-page") == pageNumber) {
+        page.style.display = "block";
+      } else {
+        page.style.display = "none";
+      }
+    });
+
+    bntPrev.addEventListener("click", () => {
+      if (pageNumber > 1) {
+        pageNumber--;
+        input.value = pageNumber;
+        selectPage();
+      }
+    });
+    bntNext.addEventListener("click", () => {
+      if (pageNumber < pages.length) {
+        pageNumber++;
+        input.value = pageNumber;
+        selectPage();
+      }
+    });
+    checkPage();
+
+
+    function selectPage() {
+      const selectedPage = input.value;
+      pageNumber = selectedPage;
+      pages.forEach((page) => {
+        page.style.display = "none";
+      });
+      pages.forEach((page) => {
+        if (page.getAttribute("data-page") == selectedPage) {
+          page.style.display = "block";
+          page.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+
+      checkPage();
+    }
+
+    function checkPage() {
+      if (pageNumber == 1) {
+        bntPrev.style.opacity = "0.5";
+        bntPrev.style.pointerEvents  = "none";
+      } else {
+        bntPrev.style.opacity = "1";
+        bntPrev.style.pointerEvents  = "auto";
+      }
+      if (pageNumber == pages.length) {
+        bntNext.style.opacity = "0.5";
+        bntNext.style.pointerEvents  = "none";
+      } else {
+        bntNext.style.opacity = "1";
+        bntNext.style.pointerEvents  = "auto";
+      }
+    }
+
+
+    input.addEventListener("change", 
+    function () {
+      if (input.value > pages.length) {
+        input.value = pages.length;
+      }  
+      if (input.value < 1) {
+        input.value = 1;
+      } 
+      selectPage();
+    });
+  }
+
+});
+
+function showPage() {
+  const resultWrap = document.querySelector(".result-wrap");
+  if (resultWrap && resultWrap.style.display == "block") {
+  
+    const pages = document.querySelectorAll(".page");
+    const input = document.querySelector(".books__number");    
+    input.setAttribute("max", pages.length);
+    const bntPrev = document.querySelector(".books__pagination-item_prev");
+    const bntNext = document.querySelector(".books__pagination-item_next");
+    let pageNumber = 1;
+    
+  
+    // const select = document.createElement("select");
+    // select.classList.add("books__select");
+    pages.forEach((page) => {
+      if (page.getAttribute("data-page") == pageNumber) {
+        page.style.display = "block";
+      } else {
+        page.style.display = "none";
+      }
+    });
+  
+    bntPrev.addEventListener("click", () => {
+      if (pageNumber > 1) {
+        pageNumber--;
+        input.value = pageNumber;
+        selectPage();
+      }
+    });
+    bntNext.addEventListener("click", () => {
+      if (pageNumber < pages.length) {
+        pageNumber++;
+        input.value = pageNumber;
+        selectPage();
+      }
+    });
+    
+    // pages.forEach((page) => {
+    //   const option = document.createElement("option");
+    //   const pageNumber = page.getAttribute("data-page");
+    //   option.value = pageNumber;
+    //   option.innerHTML = pageNumber;
+    //   option.setAttribute("data-page", pageNumber);
+    //   option.classList.add("books__option");      
+    //   select.append(option);
+    // });
+  
+    // book.prepend(select);
+    // console.log(select);
+    checkPage();
+  
+  
+    function selectPage() {
+      const selectedPage = input.value;
+      pageNumber = selectedPage;
+      pages.forEach((page) => {
+        page.style.display = "none";
+      });
+      pages.forEach((page) => {
+        if (page.getAttribute("data-page") == selectedPage) {
+          page.style.display = "block";
+        }
+      });
+  
+      checkPage();
+    }
+  
+    function checkPage() {
+      if (pageNumber == 1) {
+        bntPrev.style.opacity = "0.5";
+        bntPrev.style.pointerEvents  = "none";
+      } else {
+        bntPrev.style.opacity = "1";
+        bntPrev.style.pointerEvents  = "auto";
+      }
+      if (pageNumber == pages.length) {
+        bntNext.style.opacity = "0.5";
+        bntNext.style.pointerEvents  = "none";
+      } else {
+        bntNext.style.opacity = "1";
+        bntNext.style.pointerEvents  = "auto";
+      }
+    }
+  
+  
+    input.addEventListener("input", function () {
+      if (input.value > pages.length) {
+        input.value = pages.length;
+      }  
+      if (input.value < 1) {
+        input.value = 1;
+      }    
+    })
+  
+  
+  
+    input.addEventListener("change", selectPage);
+  
+    // body.style.minHeight = "initial";
+  
+  
+    // header.style.flexShrink = "0";
+    // footer.style.flexShrink = "0";
+    // main.style.flexGrow = "1";
+  
+  
+  
+  
+  }
 }

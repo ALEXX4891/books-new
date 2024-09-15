@@ -21,7 +21,9 @@ $httpMethod = $_SERVER['REQUEST_METHOD'];
 $allowedExtensions = ['docx'];
 
 if ($httpMethod === 'POST') {
-  $password = 'pro100Zagruzka';
+
+  $password = 'pro100Zagruzka'; // -------------- пароль -------------------
+
   if (!isset($_POST['password']) || $_POST['password'] !== $password) {
     die(json_encode('Ошибка: неверный пароль!', JSON_UNESCAPED_UNICODE));
   }
