@@ -12,5 +12,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/backend/db.php';
   <meta name="keywords" content="<? echo $keywords ?>" />
   <meta name="description" content="<? echo $description ?>" />
   <link rel="canonical" href="<? echo 'https://' . $_SERVER['HTTP_HOST'] . '' . $_SERVER['REQUEST_URI']; ?>" />
-  <link rel="stylesheet" href="/assets/css/newStyle.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- <link rel="stylesheet" href="/assets/css/newStyle.css"> -->
+  <!-- <script src="scripts/base.js" defer></script> -->
 </head>

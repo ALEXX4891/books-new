@@ -178,7 +178,7 @@ if (formDocx) {
       formDocx.classList.add("_sending");
       let formData = new FormData(formDocx);
 
-      let response = await fetch("/backend/parser.php", {
+      let response = await fetch("parser.php", {
         method: "POST",
         body: formData,
       });
@@ -189,13 +189,19 @@ if (formDocx) {
         // formDocx.reset();
         // popupOpen(document.getElementById("success"));
         formDocx.classList.remove("_sending");
-        document.querySelector(".result-wrap").style.display = "block";
-        // document.querySelector(".result-wrap").innerHTML = result;
 
-        document.getElementById("result").innerHTML = result;
-
-        // sliderInit();
-        showSaveForm();
+        if (result == 'Ошибка: неверный пароль!') {
+          alert(result);
+        } else {
+          document.querySelector(".result-wrap").style.display = "block";
+          // document.querySelector(".result-wrap").innerHTML = result;
+  
+          document.getElementById("result").innerHTML = result;
+          console.log(result);
+  
+          // sliderInit();
+          showSaveForm();
+        }
       } else {
         // popupOpen(document.getElementById("error"));
         formDocx.classList.remove("_sending");
@@ -222,7 +228,7 @@ if (formSave) {
       const book = document.querySelector(".book").innerHTML;
       formData.append("book", book);
 
-      let response = await fetch("/backend/saver.php", {
+      let response = await fetch("saver.php", {
         method: "POST",
         body: formData,
       });
