@@ -1,32 +1,20 @@
 <?
-// phpinfo();
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
 
 include $_SERVER["DOCUMENT_ROOT"] . '/backend/db.php';
 
 $resID = mysqli_query($db, "SELECT * FROM books ORDER BY id DESC LIMIT 0, 1");
-// SELECT MAX(date_column) AS max_date
+
 $id = mysqli_fetch_array($resID);
 $uniqId = $id ? $id['id'] + 1 : 1;
-
-// $uniqId = $id['id'] + 1;
 
 
 include $_SERVER["DOCUMENT_ROOT"] . '/backend/db.php';
 
 $name = $_POST['name'];
-// $name = 'Название';
 
 $category = $_POST['category'];
-// $category = 'Категория';
 
 $content = $_POST['book'];
-
-// $content = file_get_contents('newfile.php');
-
-// $content = '<div class="imgWrap"><img src="temp-images/rId13.jpeg" style="width:248px; height:306px; padding:10px 5px 10px 5px;"></div>';
-// var_dump($content);
 
 $content = str_replace('src="temp-images', 'src="/images/' . $uniqId, $content);
 
@@ -44,41 +32,12 @@ if (function_exists('mb_ereg_replace'))
 }
 
 $content = mb_escape($content);  // удаляем запрещенные символы
-$content = iconv(mb_detect_encoding($content, mb_detect_order(), true), "UTF-8", $content);
-// echo gettype($content);
-// echo $content;
-
-// echo $content;
-
-
-// $content = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, cumque.';
+// $content = iconv(mb_detect_encoding($content, mb_detect_order(), true), "UTF-8", $content);
 
 $sql = "INSERT INTO `books` (`name`, `category`, `content`) VALUES('$name', '$category', '$content')";
 
-// echo $name;
-// echo $category;
-// echo $content;
 
 $result = mysqli_query($db, $sql);
-// echo '<pre>';
-// // echo $_SERVER["DOCUMENT_ROOT"] . '/backend/db.php';
-// // var_dump($db);
-// var_dump($result);
-
-
-// echo '</pre>';
-
-// $resultServ = mysqli_query($db, "SELECT * FROM books");
-// $resultServ = mysqli_fetch_assoc(mysqli_query($db, "SELECT * FROM books"));
-// print_r($resultServ);
-// $serv = mysqli_fetch_array($result);
-
-// $name = $_POST['name'];
-// var_dump($result);
-// echo $_SERVER["DOCUMENT_ROOT"] . '/backend/db.php';
-
-// $book = $_POST['book'];
-
 
 // Get array of all source files
 $files = scandir("temp-images/");
@@ -90,7 +49,6 @@ if (!is_dir($destination)) {
   mkdir($destination, 0755, true);
 }
 
-// echo $destination;
 // Cycle through all source files
 $delete = [];
 foreach ($files as $file) {
@@ -107,13 +65,10 @@ foreach ($delete as $file) {
 
 
 
-// INSERT INTO `books` (`id`, `name`, `category`, `content`) VALUES (NULL, 'рараапр', 'прпарапрарарапрапр', 'опопопопопо');
 if ($result) {
-  // echo json_encode("New record created successfully");
   echo json_encode('<p>Данные успешно добавлены в таблицу. Можно загрузить следующую книгу.</p>', JSON_UNESCAPED_UNICODE);
 } else {
   echo json_encode('<p>Произошла ошибка: ' . mysqli_error($db) . '</p>', JSON_UNESCAPED_UNICODE);
-  // echo json_encode("Error: " . $result . "<br>" . $db->error);
 }
 
 mysqli_close($db);

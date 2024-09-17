@@ -27,22 +27,46 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
     <div class="form-wrapper">
       <form class="form" id="docx-form" action="#" method="post" enctype="multipart/form-data">
         <label class="label" for="docx-form-name">
-          Введите название книги:
+          Введите название книги:*
           <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги">
         </label>
 
         <label class="label" for="docx-form-category">
-          Введите жанр произведения:
+          Введите жанр произведения:*
           <input class="input docx-form-category _req" type="text" name="category" id="docx-form-category" placeholder="Категория произведения">
         </label>
 
         <label class="label" for="password">
-          Введите пароль:
+          Введите пароль:*
           <input class="input docx-form-name _req" type="password" name="password" id="password" placeholder="Пароль">
         </label>
 
+        <label class="label" for="autor">
+          Автор:*
+          <input class="input docx-form-name _req" type="text" name="autor" id="autor" placeholder="Автор">
+        </label>
 
-        <input class="input _req _file" type="file" name="file" id="file">
+        <label class="label" for="img">
+          Обложка:*
+          <input class="input docx-form-name _file _req" type="file" name="img" id="img">
+        </label>
+
+        <label class="label" for="link_autor">
+          Ссылка на автора:*
+          <input class="input docx-form-name _req" type="text" name="link_autor" id="link_autor" placeholder="Ссылка на автора">
+        </label>
+
+        <label class="label" for="link_forum">
+          Ссылка на страницу обсуждения:*
+          <input class="input docx-form-name _req" type="text" name="link_forum" id="link_forum" placeholder="Ссылка на страницу обсуждения">
+        </label>
+
+        <label class="label" for="file">
+          Файл книги:*
+          <input class="input _req _file" type="file" name="file" id="file">
+        </label>
+
+        <!-- <input class="input _req _file" type="file" name="file" id="file"> -->
         <input class="open-btn" type="submit" value="Открыть просмотр">
       </form>
 
