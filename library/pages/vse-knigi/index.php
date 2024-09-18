@@ -12,7 +12,6 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
       <a href="men_test.html" class="panel_link top">Личностные тесты </a>
     </div>
 
-
     <div class="panel">
       <a href="men_acquaintances.html" class="panel_link end">Знакомства</a>
       <a href="men_clubs.html" class="panel_link end">Клубы и сообщества</a>
@@ -40,8 +39,6 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         } while ($categoryFromDb = mysqli_fetch_array($resultCategory));
       }
 
-
-
       $resultBook = mysqli_query($db, "SELECT * FROM books");
       $bookFromDb = mysqli_fetch_array($resultBook);
 
@@ -50,7 +47,11 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
           $booksArr[] = [
             'id' => $bookFromDb['id'],
             'name' => $bookFromDb['name'],
-            'category' => $bookFromDb['category']
+            'category' => $bookFromDb['category'],
+            'volume' => $bookFromDb['volume'],
+            'added_date' => $bookFromDb['added_date'],
+            'link_author' => $bookFromDb['link_author'],
+            'link_forum' => $bookFromDb['link_forum'],
           ];
         } while ($bookFromDb = mysqli_fetch_array($resultBook));
       }
@@ -65,12 +66,46 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         for ($i = 0; $i < count($booksArr); $i++) {
           if ($booksArr[$i]['category'] == $category) {
             echo "
-                          <li class='books__item' data-category='{$category}' style='display: none;'>                    
-                            <a class='books__link' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>
-                              {$booksArr[$i]['name']} 
-                            </a>
-                          </li>
-                          ";
+                <li class='books__item' data-category='{$category}' style='display: none;'>                    
+                  <a class='books__link' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>
+                    {$booksArr[$i]['name']}                     
+                    </a>
+                    <div class='books__info'>
+                      <span class='books__label'>
+                        Страниц: 
+                      </span>
+                      <span class='books__value'>
+                        {$booksArr[$i]['volume']}
+                      </span>
+                    </div> 
+                    <div class='books__info'>
+                      <span class='books__label'>
+                        Дата добавления: 
+                      </span>
+                      <span class='books__value'>
+                        {$booksArr[$i]['added_date']}
+                      </span>
+                    </div>
+                    <div class='books__info'>
+                      <span class='books__label'>
+                        Страница автора: 
+                      </span>
+                      <a class='books__value' href='{$booksArr[$i]['link_author']}' target='_blank'>
+                        ссылка
+                      </a>
+                    </div>
+                    <div class='books__info'>
+                      <span class='books__label'>
+                        Страница обсуждения: 
+                      </span>
+                      <a class='books__value' href='{$booksArr[$i]['link_forum']}' target='_blank'>
+                        ссылка
+                      </a>
+                    </div> 
+                  
+            
+                </li>
+                ";
           }
         }
 

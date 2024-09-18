@@ -19,11 +19,39 @@ $link_forum = $_POST['link_forum'];
 $link_announcement = $_POST['link_announcement'];
 $link_buy = $_POST['link_buy'];
 $contain_img = strpos($content, 'src="temp-images') ? true : false;
+$volume = $_POST['volume'];
+$date = date("Y-m-d H:i:s");
+
+
+// '$name',
+// '$category',
+// '$content',
+// '$author',
+// '$link_author', 
+// '$link_forum', 
+// '$link_announcement', 
+// '$link_buy',
+// '$contain_img',
+// '$volume',
+// '$date'
+
+
+// $volume = preg_replace("/[^a-zA-Zа-яА-Я\\p{P}]/m", "", str_replace('&nbsp;', '', strip_tags(strtolower($content))));
+
+// $name = 'sdfs';
+// $category = 'dgdfgd';
+// $content = 'ffgdfg';
+// $author = 'dfgdfg';
+// $link_author = 'gdgdg';
+// $link_forum = 'dgdfgdg';
+// $link_announcement = 'dfggdgdfg';
+// $link_buy = 'vxvxxvxv';
+// $contain_img = true;
+// $volume = 56;
 // $volume = str_replace(' ', '', str_replace('&nbsp;', '', strip_tags(strtolower($content))));
 // $volume = strlen(preg_replace("/[^a-zA-Zа-яА-Я\\p{P}]/m", "", str_replace(' ', '', str_replace('&nbsp;', '', strip_tags(strtolower($content))))));
 // $volume = preg_replace("/[^a-zA-Zа-яА-Я\\p{P}]/m", "", str_replace(' ', '', str_replace('&nbsp;', '', strip_tags(strtolower($content)))));
 
-$volume = preg_replace("/[^a-zA-Zа-яА-Я\\p{P}]/m", "", str_replace('&nbsp;', '', strip_tags(strtolower($content))));
 // $matches = [];
 // preg_match_all('/[a-zA-Zа-яА-Я]+/m', str_replace(' ', '', str_replace('&nbsp;', '', strip_tags(strtolower($content)))), $matches);
 
@@ -37,7 +65,6 @@ $volume = preg_replace("/[^a-zA-Zа-яА-Я\\p{P}]/m", "", str_replace('&nbsp;',
 // echo $volume;
 // echo '</pre>';
 
-$date = date("Y-m-d H:i:s");
 
 $content = str_replace('src="temp-images', 'src="/library/images/' . $uniqId, $content);
 
@@ -60,12 +87,26 @@ $sql = "INSERT INTO `books` (
   `name`,
   `category`,
   `content`,
-  `author`
+  `author`,
+  `link_author`, 
+  `link_forum`, 
+  `link_announcement`, 
+  `link_buy`, 
+  `contain_img`,
+  `volume`,
+  `added_date`
   ) VALUES(
     '$name',
     '$category',
-    '$content'
-    '$author'
+    '$content',
+    '$author',
+    '$link_author', 
+    '$link_forum', 
+    '$link_announcement', 
+    '$link_buy',
+    '$contain_img',
+    '$volume',
+    '$date'
     )";
 
 
@@ -84,6 +125,7 @@ $sql = "INSERT INTO `books` (
 // '$contain_img',
 // '$volume',
 // '$date'
+// echo $sql;
 
 
 $result = mysqli_query($db, $sql);

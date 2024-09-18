@@ -7,7 +7,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/head.php';
 
 <header>
 	<nav id="head_nav">
-		<a href="men.html" class="logo">
+		<a href="/" class="logo">
 			<img src="images/logo_men.jpg" alt="мужские клубы и сообщества">На главную
 		</a>
 
