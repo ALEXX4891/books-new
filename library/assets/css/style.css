@@ -1715,7 +1715,7 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
   margin-bottom: 25px;
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   /* background-color: white; */
   /* padding: 15px; */

@@ -22,7 +22,7 @@ if (formDocx) {
       });
 
       if (response.ok) {
-        // window.location.href = "/backend/parser.php";
+        // window.location.href = "/library/backend/parser.php";
         let result = await response.json();
         // formDocx.reset();
         // popupOpen(document.getElementById("success"));
@@ -157,12 +157,45 @@ function showSaveForm() {
   saveForm.style.display = "grid";
   const docxFormName = document.getElementById("docx-form-name").value;
   const docxFormCategory = document.getElementById("docx-form-category").value;
+  const docxFormAuthor = document.getElementById("docx-form-author").value;
+  const docxFormLink_author = document.getElementById("docx-form-link_author").value;
+  const docxFormLink_forum = document.getElementById("docx-form-link_forum").value;
+  const docxFormLink_announcement = document.getElementById("docx-form-link_announcement").value;
+  const docxFormLink_buy = document.getElementById("docx-form-link_buy").value;
+
+  // yle="display: none;" method="post" enctype="multipart/form-data">
+  //     <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги*">
+  //     <input class="input docx-form-category _req" type="text" name="category" id="docx-form-category" placeholder="Жанр произведения*">
+  //     <input class="input docx-form-author _req" type="text" name="author" id="docx-form-author" placeholder="Автор*">
+  //     <input class="input docx-form-link_author _req" type="text" name="link_author" id="docx-form-link_author" placeholder="Ссылка на автора*">
+  //     <input class="input docx-form-link_forum _req" type="text" name="link_forum" id="docx-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
+  //     <input class="input docx-form-link_announcement _req" type="text" name="link_announcement" id="docx-form-link_announcement" placeholder="Ссылка на анотацию*">
+  //     <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form
 
   let saveFormName = document.getElementById("save-form-name");
   let saveFormCategory = document.getElementById("save-form-category");
+  let saveFormAuthor = document.getElementById("save-form-author");
+  let saveFormLink_author = document.getElementById("save-form-link_author");
+  let saveFormLink_forum = document.getElementById("save-form-link_forum");
+  let saveFormLink_announcement = document.getElementById("save-form-link_announcement");
+  let saveFormLink_buy = document.getElementById("save-form-link_buy");
+
+  // <input class="input docx-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
+  // <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
+  // <input class="input save-form-author _req" type="text" name="author" id="save-form-author" placeholder="Автор*">
+  // <input class="input save-form-link_author _req" type="text" name="link_author" id="save-form-link_author" placeholder="Ссылка на автора*">
+  // <input class="input save-form-link_forum _req" type="text" name="link_forum" id="save-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
+  // <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
+  // <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
+
 
   saveFormName.value = docxFormName;
   saveFormCategory.value = docxFormCategory;
+  saveFormAuthor.value = docxFormAuthor;
+  saveFormLink_author.value = docxFormLink_author;
+  saveFormLink_forum.value = docxFormLink_forum;
+  saveFormLink_announcement.value = docxFormLink_announcement;
+  saveFormLink_buy.value = docxFormLink_buy;
 }
 
 function showDocxForm() {
@@ -202,10 +235,9 @@ if (booksPage) {
   });
 }
 
-window.addEventListener("load", () => {  
+window.addEventListener("load", () => {
   const book = document.querySelector(".books");
   if (book) {
-
     const body = document.querySelector("body");
     const header = document.querySelector("header");
     const footer = document.querySelector("footer");
@@ -218,12 +250,11 @@ window.addEventListener("load", () => {
     footer.style.display = "none";
 
     const pages = book.querySelectorAll(".page");
-    const input = document.querySelector(".books__number");    
+    const input = document.querySelector(".books__number");
     input.setAttribute("max", pages.length);
     const bntPrev = document.querySelector(".books__pagination-item_prev");
     const bntNext = document.querySelector(".books__pagination-item_next");
     let pageNumber = 1;
-    
 
     pages.forEach((page) => {
       if (page.getAttribute("data-page") == pageNumber) {
@@ -248,7 +279,6 @@ window.addEventListener("load", () => {
       }
     });
     checkPage();
-
 
     function selectPage() {
       const selectedPage = input.value;
@@ -269,47 +299,42 @@ window.addEventListener("load", () => {
     function checkPage() {
       if (pageNumber == 1) {
         bntPrev.style.opacity = "0.5";
-        bntPrev.style.pointerEvents  = "none";
+        bntPrev.style.pointerEvents = "none";
       } else {
         bntPrev.style.opacity = "1";
-        bntPrev.style.pointerEvents  = "auto";
+        bntPrev.style.pointerEvents = "auto";
       }
       if (pageNumber == pages.length) {
         bntNext.style.opacity = "0.5";
-        bntNext.style.pointerEvents  = "none";
+        bntNext.style.pointerEvents = "none";
       } else {
         bntNext.style.opacity = "1";
-        bntNext.style.pointerEvents  = "auto";
+        bntNext.style.pointerEvents = "auto";
       }
     }
 
-
-    input.addEventListener("change", 
-    function () {
+    input.addEventListener("change", function () {
       if (input.value > pages.length) {
         input.value = pages.length;
-      }  
+      }
       if (input.value < 1) {
         input.value = 1;
-      } 
+      }
       selectPage();
     });
   }
-
 });
 
 function showPage() {
   const resultWrap = document.querySelector(".result-wrap");
   if (resultWrap && resultWrap.style.display == "block") {
-  
     const pages = document.querySelectorAll(".page");
-    const input = document.querySelector(".books__number");    
+    const input = document.querySelector(".books__number");
     input.setAttribute("max", pages.length);
     const bntPrev = document.querySelector(".books__pagination-item_prev");
     const bntNext = document.querySelector(".books__pagination-item_next");
     let pageNumber = 1;
-    
-  
+
     // const select = document.createElement("select");
     // select.classList.add("books__select");
     pages.forEach((page) => {
@@ -319,7 +344,7 @@ function showPage() {
         page.style.display = "none";
       }
     });
-  
+
     bntPrev.addEventListener("click", () => {
       if (pageNumber > 1) {
         pageNumber--;
@@ -334,22 +359,21 @@ function showPage() {
         selectPage();
       }
     });
-    
+
     // pages.forEach((page) => {
     //   const option = document.createElement("option");
     //   const pageNumber = page.getAttribute("data-page");
     //   option.value = pageNumber;
     //   option.innerHTML = pageNumber;
     //   option.setAttribute("data-page", pageNumber);
-    //   option.classList.add("books__option");      
+    //   option.classList.add("books__option");
     //   select.append(option);
     // });
-  
+
     // book.prepend(select);
     // console.log(select);
     checkPage();
-  
-  
+
     function selectPage() {
       const selectedPage = input.value;
       pageNumber = selectedPage;
@@ -361,50 +385,42 @@ function showPage() {
           page.style.display = "block";
         }
       });
-  
+
       checkPage();
     }
-  
+
     function checkPage() {
       if (pageNumber == 1) {
         bntPrev.style.opacity = "0.5";
-        bntPrev.style.pointerEvents  = "none";
+        bntPrev.style.pointerEvents = "none";
       } else {
         bntPrev.style.opacity = "1";
-        bntPrev.style.pointerEvents  = "auto";
+        bntPrev.style.pointerEvents = "auto";
       }
       if (pageNumber == pages.length) {
         bntNext.style.opacity = "0.5";
-        bntNext.style.pointerEvents  = "none";
+        bntNext.style.pointerEvents = "none";
       } else {
         bntNext.style.opacity = "1";
-        bntNext.style.pointerEvents  = "auto";
+        bntNext.style.pointerEvents = "auto";
       }
     }
-  
-  
+
     input.addEventListener("input", function () {
       if (input.value > pages.length) {
         input.value = pages.length;
-      }  
+      }
       if (input.value < 1) {
         input.value = 1;
-      }    
-    })
-  
-  
-  
+      }
+    });
+
     input.addEventListener("change", selectPage);
-  
+
     // body.style.minHeight = "initial";
-  
-  
+
     // header.style.flexShrink = "0";
     // footer.style.flexShrink = "0";
     // main.style.flexGrow = "1";
-  
-  
-  
-  
   }
 }

@@ -7,7 +7,7 @@
 
 
 const FILES_STORAGE_PATH = 'uploaded';
-// const FILES_STORAGE_PATH = '/backend/uploaded';
+// const FILES_STORAGE_PATH = '/library/backend/uploaded';
 // mkdir(FILES_STORAGE_PATH, 0777, true);
 
 if (!file_exists(FILES_STORAGE_PATH)) {
@@ -93,5 +93,5 @@ function deleteFiles($dir)
 
 $dir = 'uploaded';
 deleteFiles($dir);
-$dir = '/images/';
+$dir = '/library/images/';
 deleteFiles($dir);

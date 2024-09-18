@@ -2,7 +2,7 @@
 $title = 'Гадания предсказания для мужчин';
 $description = '';
 $keywords = '';
-include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
+include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 ?>
 <nav class="mobile_menu">
 
@@ -124,5 +124,5 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
 
 
 <?
-include '' . $_SERVER["DOCUMENT_ROOT"] . '/includes/footer.php';
+include '' . $_SERVER["DOCUMENT_ROOT"] . '/library/includes/footer.php';
 ?>

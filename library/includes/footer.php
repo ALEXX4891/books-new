@@ -5,7 +5,7 @@
 		<p>Все права защищены</p>
 	</div>
 	<nav>
-		<a class="link" href="/pages/vse-knigi/">Книги</a>
+		<a class="link" href="/library/pages/vse-knigi/">Книги</a>
 		<a class="link" href="">О сайте</a>
 		<a class="link" href="">Контакты</a>
 		<a class="link" href="">О нас</a>
@@ -16,7 +16,7 @@
 	</nav>
 </footer>
 
-<script module src="/assets/js/script.js"></script>
+<script module src="/library/assets/js/script.js"></script>
 
 </body>
 

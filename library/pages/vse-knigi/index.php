@@ -2,7 +2,7 @@
 $title = 'Главная';
 $description = '';
 $keywords = '';
-include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
+include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 ?>
 
 <main class="main books-page test_block">
@@ -66,7 +66,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
           if ($booksArr[$i]['category'] == $category) {
             echo "
                           <li class='books__item' data-category='{$category}' style='display: none;'>                    
-                            <a class='books__link' href='/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>
+                            <a class='books__link' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>
                               {$booksArr[$i]['name']} 
                             </a>
                           </li>
@@ -98,5 +98,5 @@ include $_SERVER["DOCUMENT_ROOT"] . '/includes/header.php';
 </main>
 
 <?
-include '' . $_SERVER["DOCUMENT_ROOT"] . '/includes/footer.php';
+include '' . $_SERVER["DOCUMENT_ROOT"] . '/library/includes/footer.php';
 ?>
