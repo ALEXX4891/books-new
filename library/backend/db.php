@@ -11,3 +11,17 @@ $db = mysqli_connect($host, $user, $pswd, $database) or die("Ошибка БД l
 mysqli_set_charset($db, 'utf8mb4');
 
 // include $_SERVER["DOCUMENT_ROOT"] . 'db.php';
+
+
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
+// $host = 'localhost'; // имя хоста 
+// $database = 'a366203_books'; // a366203_books
+// $user = 'a366203_books'; // a366203_books
+// $pswd = 'hZ09EJIgnG'; // пароль
+
+// $db = mysqli_connect($host, $user, $pswd, $database) or die("Ошибка БД localhost #1");
+// mysqli_set_charset($db, 'utf8mb4');
+
+// // include $_SERVER["DOCUMENT_ROOT"] . 'db.php';

@@ -26,101 +26,74 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 
     <div class="form-wrapper">
       <form class="form" id="docx-form" action="#" method="post" enctype="multipart/form-data">
-        <label class="label" for="docx-form-name">
-          Введите название книги:*
-          <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги*">
-        </label>
+        <!-- <label class="label" for="docx-form-name"> -->
+        <!-- Введите название книги:* -->
+        <input class="input docx-form-name _req"  type="text" name="name" id="docx-form-name" placeholder="Название книги*">
+        <!-- </label> -->
 
-        <label class="label" for="docx-form-category">
-          Введите жанр произведения:*
-          <input class="input docx-form-category _req" type="text" name="category" id="docx-form-category" placeholder="Жанр произведения*">
-        </label>
+        <!-- <label class="label" for="docx-form-category"> -->
+        <!-- Введите жанр произведения:* -->
+        <input class="input docx-form-category _req" type="text" name="category" id="docx-form-category" placeholder="Жанр произведения*">
+        <!-- </label> -->
 
-        <label class="label" for="author">
-          Автор:*
-          <input class="input docx-form-author _req" type="text" name="author" id="docx-form-author" placeholder="Автор*">
-        </label>
+        <!-- <label class="label" for="author"> -->
+        <!-- Автор:* -->
+        <input class="input docx-form-author _req" type="text" name="author" id="docx-form-author" placeholder="Автор*">
+        <!-- </label> -->
 
         <!-- <label class="label" for="img">
           Обложка:*
           <input class="input docx-form-name _file _req" type="file" name="img" id="img">
         </label> -->
 
-        <label class="label" for="link_author">
-          Ссылка на автора:*
-          <input class="input docx-form-link_author _req" type="text" name="link_author" id="docx-form-link_author" placeholder="Ссылка на автора*">
-        </label>
+        <!-- <label class="label" for="link_author"> -->
+        <!-- Ссылка на автора:* -->
+        <input class="input docx-form-link_author _req" type="text" name="link_author" id="docx-form-link_author" placeholder="Ссылка на автора*">
+        <!-- </label> -->
 
-        <label class="label" for="link_forum">
-          Ссылка на страницу обсуждения:*
-          <input class="input docx-form-link_forum _req" type="text" name="link_forum" id="docx-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
-        </label>
+        <!-- <label class="label" for="link_forum"> -->
+        <!-- Ссылка на страницу обсуждения:* -->
+        <input class="input docx-form-link_forum _req" type="text" name="link_forum" id="docx-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
+        <!-- </label> -->
 
-        <label class="label" for="link_announcement">
-          Ссылка на анотацию:*
-          <input class="input docx-form-link_announcement _req" type="text" name="link_announcement" id="docx-form-link_announcement" placeholder="Ссылка на анотацию*">
-        </label>
+        <!-- <label class="label" for="link_announcement"> -->
+        <!-- Ссылка на анотацию:* -->
+        <input class="input docx-form-link_announcement _req" type="text" name="link_announcement" id="docx-form-link_announcement" placeholder="Ссылка на анотацию*">
+        <!-- </label> -->
 
-        <label class="label" for="link_buy">
-          Ссылка на страницу в магазине:*
-          <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form-link_buy" placeholder="Ссылка на страницу в магазине*">
-        </label>
+        <!-- <label class="label" for="link_buy"> -->
+        <!-- Ссылка на страницу в магазине:* -->
+        <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form-link_buy" placeholder="Ссылка на страницу в магазине*">
+        <!-- </label> -->
 
-        <label class="label" for="file">
-          Файл книги:*
-          <input class="input _req _file" type="file" name="file" id="file">
-        </label>
+        <!-- <label class="label" for="file"> -->
+        <!-- Файл книги:* -->
+        <input class="input _req _file" type="file" name="file" id="file">
+        <!-- </label> -->
 
-        <label class="label" for="password">
-          Введите пароль:*
-          <input class="input docx-form-name _req" type="password" name="password" id="password" placeholder="Пароль*">
-        </label>
 
+        <!-- <label class="label" for="password"> -->
+        <!-- Введите пароль:* -->
+        <input class="input docx-form-name _req" type="password" name="password" id="password" placeholder="Пароль*">
+        <!-- </label> -->
+
+        <!-- <input class="input _req _file" type="file" name="file" id="file"> -->
         <input class="open-btn" type="submit" value="Открыть просмотр">
       </form>
 
       <form class="form" id="save-form" action="#" style="display: none;" method="post" enctype="multipart/form-data">
-        <label class="label" for="docx-form-name">
-          Введите название книги:*
-          <input class="input save-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
-        </label>
+        <input class="input save-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
+        <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
+        <input class="input save-form-author _req" type="text" name="author" id="save-form-author" placeholder="Автор*">
+        <input class="input save-form-link_author _req" type="text" name="link_author" id="save-form-link_author" placeholder="Ссылка на автора*">
+        <input class="input save-form-link_forum _req" type="text" name="link_forum" id="save-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
+        <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
+        <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
 
-        <label class="label" for="docx-form-category">
-          Введите жанр произведения:*
-          <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
-        </label>
-
-        <label class="label" for="author">
-          Автор:*
-          <input class="input save-form-author _req" type="text" name="author" id="save-form-author" placeholder="Автор*">
-        </label>
-
-        <label class="label" for="link_author">
-          Ссылка на автора:*
-          <input class="input save-form-link_author _req" type="text" name="link_author" id="save-form-link_author" placeholder="Ссылка на автора*">
-        </label>
-
-        <label class="label" for="link_announcement">
-          Ссылка на анотацию:*
-          <input class="input save-form-link_forum _req" type="text" name="link_forum" id="save-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
-        </label>
-
-        <label class="label" for="link_announcement">
-          Ссылка на анотацию:*
-          <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
-        </label>
-
-        <label class="label" for="link_buy">
-          Ссылка на страницу в магазине:*
-          <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
-        </label>
-
+        <!-- <input class="input _req" type="text" name="name" id="save-form-name" placeholder="Название книги"> -->
+        <!-- <input class="input _req" type="text" name="category" id="save-form-category" placeholder="Категория произведения"> -->
+        <!-- <input class="input _req _file" type="file" name="file" id="file"> -->
         <input class="open-btn" type="submit" value="Cохранить">
-
-        <label class="label" for="volume">
-          Количество страниц:
-          <input class="input save-form-volume _req" type="text" name="volume" id="save-form-volume">
-        </label>
       </form>
 
       <!-- <a href="/library/pages/vse-knigi" class="all-btn">

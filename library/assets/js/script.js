@@ -37,10 +37,9 @@ if (formDocx) {
           document.getElementById("result").innerHTML = result;
           // console.log(result);
           showPage();
-          
+
           // sliderInit();
           showSaveForm();
-          countPages();
         }
       } else {
         // popupOpen(document.getElementById("error"));
@@ -199,19 +198,6 @@ function showSaveForm() {
   saveFormLink_buy.value = docxFormLink_buy;
 }
 
-function countPages() {
-  const pages = document.querySelectorAll(".page[data-page]");
-  const input = document.getElementById("save-form-volume");
-  let count = 0;
-  pages.forEach((page) => {
-    count++;
-  });
-  input.value = count;
-  // console.log(count);
-  // console.log(input.value);
-  // return count;
-}
-
 function showDocxForm() {
   const formDocx = document.getElementById("docx-form");
   const saveForm = document.getElementById("save-form");
@@ -226,7 +212,7 @@ if (booksPage) {
   const categories = document.querySelectorAll(".categories__item");
   categories.forEach((item) => {
     item.addEventListener("click", () => {
-      if (item.querySelector(".books__item").style.display === "flex") {
+      if (item.querySelector(".books__item").style.display === "block") {
         booksInCategory = item.querySelectorAll(".books__item");
         console.log(booksInCategory);
         booksInCategory.forEach((book) => {
@@ -243,7 +229,7 @@ if (booksPage) {
       const books = item.querySelectorAll(".books__item");
 
       books.forEach((book) => {
-        book.style.display = "flex";
+        book.style.display = "block";
       });
     });
   });

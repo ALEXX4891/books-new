@@ -1,28 +1,16 @@
 <?
-$title = 'Главная';
+$title = 'Библиотека';
 $description = '';
 $keywords = '';
 include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 ?>
 
 <main class="main books-page test_block">
-  <div class="main_panel">
-    <div class="panel">
-      <a href="men_about.html" class="panel_link top ">О гаданиях</a>
-      <a href="men_test.html" class="panel_link top">Личностные тесты </a>
-    </div>
-
-    <div class="panel">
-      <a href="men_acquaintances.html" class="panel_link end">Знакомства</a>
-      <a href="men_clubs.html" class="panel_link end">Клубы и сообщества</a>
-      <a href="shop/index.html" class="panel_link end">Магический магазинчик</a>
-      <a href="library/index.html" class="panel_link end">Эро библиотека</a>
-      <a href="psycholog/index.html" class="panel_link end">Спец по отношениям</a>
-    </div>
+  
   </div>
   <div class="container books__container instruction_block">
 
-    <h1 class="books__title">Категории</h1>
+    <h1 class="books__title">Каталог</h1>
     <ul class="books__list categories">
 
       <?
@@ -67,39 +55,35 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
           if ($booksArr[$i]['category'] == $category) {
             echo "
                 <li class='books__item' data-category='{$category}' style='display: none;'>                    
-                  <a class='books__link' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>
-                    {$booksArr[$i]['name']}                     
-                    </a>
-                    <div class='books__info'>
-                      <span class='books__label'>
-                        Страниц: 
-                      </span>
-                      <span class='books__value'>
-                        {$booksArr[$i]['volume']}
-                      </span>
-                    </div> 
-                    <div class='books__info'>
-                      <span class='books__label'>
-                        Дата добавления: 
-                      </span>
-                      <span class='books__value'>
+          <a class='books__value' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>{$booksArr[$i]['name']} 
+         </a>
+                                   <a class='books__value' href='{$booksArr[$i]['link_author']}' target='_blank'>  Автор  
+        </a>  
+
+     <div class='books__info'>
+       
+<span class='books__value'>
                         {$booksArr[$i]['added_date']}
                       </span>
-                    </div>
+          </div> 
+         <div class='books__info'>
+                      <span class='books__label'>
+</span>
+                      
+              <span class='books__value'>
+                        {$booksArr[$i]['volume']}
+    знаков                  </span>              </div>
                     <div class='books__info'>
                       <span class='books__label'>
-                        Страница автора: 
+                         
                       </span>
-                      <a class='books__value' href='{$booksArr[$i]['link_author']}' target='_blank'>
-                        ссылка
-                      </a>
-                    </div>
+          
                     <div class='books__info'>
                       <span class='books__label'>
-                        Страница обсуждения: 
+                         
                       </span>
                       <a class='books__value' href='{$booksArr[$i]['link_forum']}' target='_blank'>
-                        ссылка
+                        Обсуждение
                       </a>
                     </div> 
                   

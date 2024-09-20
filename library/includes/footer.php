@@ -1,19 +1,13 @@
 <footer>
 	<div class="head">
-		<img src="images/logo_men.jpg" width="50px" alt="" class="logo">
-		<h4>Авторские права 2024 Код Boxx</h4>
-		<p>Все права защищены</p>
+		<img src="images/logo.jpg" width="50px" alt="" class="logo">
+		
 	</div>
 	<nav>
-		<a class="link" href="/library/pages/vse-knigi/">Книги</a>
-		<a class="link" href="">О сайте</a>
-		<a class="link" href="">Контакты</a>
-		<a class="link" href="">О нас</a>
-		<a class="link" href="">Партнеры</a>
-		<a class="link" href="">Условия использования</a>
-		<a class="link" href="">Все гадания</a>
-		<a class="link" href="">Политика конфиденциальности</a>
-	</nav>
+		
+<font size="2" color="#fff">По вопросам работы сайта обращайтесь по e-mail: <a href="mailto:smclub1@yandex.ru"><font color="#fa8e47">smclub1@yandex.ru</font></a><br>При перепечатке всех публикуемых аудио, видео, графических и 
+текстовых материалов "Системы-IVQ"   
+ссылка обязательна!
 </footer>
 
 <script module src="/library/assets/js/script.js"></script>
