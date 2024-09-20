@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../scripts/base.js" defer></script>
+    <title>эротическая библиотека</title>
+</head>
+<body>
+    <header>
+        <nav id="head_nav">
+            <a href="pages/vse-knigi/" class="logo">Еще подумаю. <br>Вернуться в библиотеку</a>
+           
+                <p class="mobile_link green">загрузка новой книги</p>
+
+            
+
+            <button class="burger" >
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+      <nav class="mobile_menu">
+
+            <a class="mobile_link active" href="pages/vse-knigi/" class="room">Еще подумаю. <br>Вернуться в библиотеку</a>
+              
+    </nav>
+
+    <div class="test_block">
+
+        <div class="main_panel">
+
+            <div class="panel">
+               <a href="pages/vse-knigi/" class="panel_link end">Еще подумаю. <br>Вернуться в библиотеку</a>
+            </div>
+            
+        </div>
+
+        
+
+        <div class="content_wrapper">
+            <div class="content">
+                <h2 class="title">Загрузка своей новой книги</h2>
+                <p>Для того что бы загрузить свою книгу - заполни форму и отправь ее на модерацию. 
+                </p>
+<p>Наберись терпения.</p>
+                <p>Сутки (а, в случае большого объема - и немного дольше) понадобится, чтобы проверить ее на соответствие правилам библиотеки.</p>
+        <p>Правила просты!</p>
+    !. Не хами!
+    !. Не нуди!
+    !. Не чуди!
+    !. Не брюзжи!
+    !. Не брызгай слюной!
+<p>И помни: Админ всегда прав!</p>
+<a class="panel_link end "href="zagruzka_rules.html">Остальные правила публикации </a>
+    
+      <h2 class="title"> Для публикации книги заполни форму и отправь на модерацию</h2>
+                <input type="hidden" name="redirect_url" id="redirect_url" value="">
+                <div class="form_item">
+                    <label for="username">Имя (псевдолним)</label>
+          <br><input class="form_input" type="text" name="username" id="username" placeholder="" required pattern="[A-Za-z]+[А-Яа-я][1-9]" title="Логин может содержать русские и латинские буквы, а так же цифры.">
+                    <p id="usernameError" class="error-message" style="display: none;">Это имя пользователя уже занято. Пожалуйста, выбери другое имя.</p>
+                </div>
+                <div class="form_item">
+                    <label for="title book">Название книги</label>
+  <br><input class="form_input" type="password" name="password" id="password" placeholder="" required>
+                </div>
+                <div class="form_item">
+                    <label for="category">Категория книги</label>
+      <br><input class="form_input" type="password" name="confirm_password" id="confirm_password" placeholder="" required title="Категория книги">
+   </div>
+<div class="form_item">
+ <label for="photo">Обложка книги (если имеется)</label>
+    <br><input type="file" name="photo" title="Загрузи фотографию или рисунок"></div>
+
+<div class="form_input">
+                    <label for="description">Анотация</label><br><textarea class="form_input" name="description" cols="50" rows="10" placeholder="Расскажи о чем книга. До 300 знаков" title=""></textarea>
+                    
+                </div>
+               <div class="form_item">
+                    <label for="description">Текст книги</label><br>
+                    <textarea class="form_input" name="description" cols="50" rows="10" placeholder="Текст книги до 100тыс знаков за одну загрузку" title=""></textarea>
+                </div>
+                <div class="form_item">
+                    <label for="photo">Или загрузи файл книги в формате "Ворд"</label>
+   <br> <input type="file" name="photo" title="">
+                </div>
+                <div class="form_item">
+                    <label for="photo">Иллюстрации</label>
+   <br>   <input type="file" name="photo" title="Загрузи фотографии или рисунки">
+   <p>!. Если у тебя нет иллюстраций, а ты хочешь, чтобы они появились - обратись к админу!</p>   </div>
+
+<input type="hidden" name="gender" value="women">
+                <div class="form_item">
+                    <label for="email">Почта</label>
+       <br> <input class="form_input" type="email" name="email" id="email" placeholder="Введи email" required title="Введи действительный адрес электронной почты.">
+                </div>
+                <div class="form_item">
+                    <label for="birth_date">Возраст</label>
+   <br> <input class="form_input" type="date" name="birth_date" title="Введи свою дату рождения.">
+                </div>
+                <div class="form_item">
+                    <label for="phone">Пол</label>
+   <br>  <input class="form_input" type="tel" name="gender" placeholder="" title="мужчина, женщина">      
+                </div>       
+      
+ <label for="photo">Твоя фотография (по желанию) или аватар </label>
+       <br> <input type="file" name="photo" title="В случае отсутствия аватар будет выбран случайным образом">
+                
+                
+                <button class="main_button" type="submit" onclick="validatePassword(event)">Отослать</button></div>
+
+                
+            </form>
+      </div>
+    </div>
+   </div>
+
+</body>
+</html>

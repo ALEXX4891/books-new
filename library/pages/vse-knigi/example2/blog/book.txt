@@ -1,0 +1,2 @@
+<span class="date-mess">Админ 10.06.2024 15:50 МСК </span><br> <span class='message'>Обсуждаем книгу "example2".</span>
+<span class="date-mess">вап 20.09.2024 17:16 мск </span><br> <span class='message'>ужос</span>
