@@ -212,9 +212,9 @@ if (booksPage) {
   const categories = document.querySelectorAll(".categories__item");
   categories.forEach((item) => {
     item.addEventListener("click", () => {
-      if (item.querySelector(".books__item").style.display === "block") {
+      if (item.querySelector(".books__item").style.display === "flex") {
         booksInCategory = item.querySelectorAll(".books__item");
-        console.log(booksInCategory);
+        // console.log(booksInCategory);
         booksInCategory.forEach((book) => {
           book.style.display = "none";
         });
@@ -229,7 +229,7 @@ if (booksPage) {
       const books = item.querySelectorAll(".books__item");
 
       books.forEach((book) => {
-        book.style.display = "block";
+        book.style.display = "flex";
       });
     });
   });
