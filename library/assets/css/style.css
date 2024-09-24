@@ -1043,7 +1043,8 @@ header nav a.active {
   border-radius: 20px;
   box-shadow: 4px 4px 14px 0 #000;
   background: #fff;
-  padding: 20px;
+  /* padding: 20px; */
+  overflow: hidden;
 }
 .auth_block .login_window form {
   width: 100%;
@@ -1457,6 +1458,8 @@ ul {
 
 input {
   padding: 0;
+  width: 100%;
+  color: #000;
 }
 
 a {
@@ -1928,4 +1931,30 @@ a {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+}
+
+._error {
+  border: 1px solid #ca2020;
+
+}
+
+.load-form {
+  position: relative;
+  padding: 20px;
+}
+
+.load-form::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5) url(/library/assets/img/loading.gif) center/50px no-repeat;
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.load-form._sending::after {
+  opacity: 1;
+  visibility: visible;
 }

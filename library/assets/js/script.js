@@ -438,3 +438,99 @@ function showPage() {
     // main.style.flexGrow = "1";
   }
 }
+
+// ---------------------------------- start отправка и валидация формы ----------------------------------
+
+const loadForm = document.querySelectorAll(".load-form");
+
+if (loadForm.length) {
+  // console.log("loadForm");
+  loadForm.forEach((form) => {
+    form.addEventListener("submit", sendForm);
+    
+    async function sendForm(e) {
+      console.log(form);
+      e.preventDefault();
+
+      let errore = formvalidation(form);
+
+      if (errore === 0) {
+        form.classList.add("_sending");
+        let formData = new FormData(form);
+        // const dataRequest = form.closest(".popup").getAttribute("data-request");
+        // if (dataRequest) {
+        //   formData.append("dataRequest", dataRequest);
+        // }
+
+        let response = await fetch("/library/backend/post-mail.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        // for (var pair of formData.entries()) {
+        //   console.log(pair[0] + ", " + pair[1]);
+        // }
+
+        if (response.ok) {
+          // let result = await response.json();
+          form.reset();
+          // if (formData.get("id") == 3) {
+          //   popupOpen(document.getElementById("popup-success-subscribe"));
+          // } else {
+          //   popupOpen(document.getElementById("success"));
+          // }
+          // TODO добавить логику показа разный сообщений об успешной отправке  через поле темы
+          form.classList.remove("_sending");
+        } else {
+          // popupOpen(document.getElementById("error"));
+          form.classList.remove("_sending");
+        }
+      } else {
+        alert("Заполните обязательные поля");
+      }
+    }
+  });
+
+  function formvalidation(item) {
+    let error = 0;
+    let formReq = item.querySelectorAll("._req");
+
+    for (let index = 0; index < formReq.length; index++) {
+      const input = formReq[index];
+
+      formRemoveError(input);
+
+      if (input.classList.contains("_email")) {
+        if (emailTest(input)) {
+          formAddError(input);
+          error++;
+        }
+      } else if (input.getAttribute("type") === "checkbox" && input.checked === false) {
+        formAddError(input);
+        error++;
+      } else {
+        if (input.value === "") {
+          formAddError(input);
+          error++;
+        }
+      }
+    }
+    return error;
+  }
+
+  function formAddError(input) {
+    input.parentElement.classList.add("_error");
+    input.classList.add("_error");
+  }
+
+  function formRemoveError(input) {
+    input.parentElement.classList.remove("_error");
+    input.classList.remove("_error");
+  }
+
+  function emailTest(input) {
+    return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
+  }
+}
+
+// ---------------------------------- end отправка и валидация формы ----------------------------------

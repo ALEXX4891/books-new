@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="./../css/style.css">
     <script src="./../scripts/base.js" defer></script>
     <title>Загрузка новой книги</title>
-    
+    <script src="/library/assets/js/script.js" defer></script>
+    <link rel="stylesheet" href="/library/assets/css/style.css">
+
 </head>
+
 <body>
     <header>
         <nav id="head_nav">
@@ -15,7 +20,7 @@
                 <img src="images/logo.jpg" alt="">
             </a>
             <a class="room" href="pages/vse-knigi/">В библиотеку</a>
-            <input type="button" onclick="history.back();" value=""/>
+            <input type="button" onclick="history.back();" value="" />
             <a href="#" class="room" onclick="history.back();">Передумал, Вернуться назад</a>
             <button class="burger">
                 <span></span><span></span><span></span>
@@ -25,66 +30,104 @@
 
     <nav class="mobile_menu">
         <a href="pages/vse-knigi/" class="mobile_link">В библиотеку</a>
-        <input type="button" onclick="history.back();" value=""/>
-        <a href="#" class="mobile_link" onclick="history.back();">Передумал, Вернуться назад</a>    
+        <input type="button" onclick="history.back();" value="" />
+        <a href="#" class="mobile_link" onclick="history.back();">Передумал, Вернуться назад</a>
     </nav>
 
     <div class="auth_block container">
-        <div class="login_window"><form id="registrationForm" enctype="multipart/form-data" method="post" action="new_book.php">
+        <div class="login_window">
+
+            <form class="load-form" id="registrationForm" enctype="multipart/form-data" method="post" action="#">
                 <h2>Загрузка новой книги</h2>
+
                 <input type="hidden" name="redirect_url" id="redirect_url" value="" required>
-      <div class="form_item">
-       <label for="username">
 
-Имя автора (псевдоним)
+                <div class="form_item">
+                    <label for="username">
+                        Имя автора (псевдоним)
+                    </label>
+                    <input class="form_input _req" type="text" name="username" id="username" placeholder="Введи имя">
+                </div>
 
-</label><input class="form_input" type="text" name="username" id="username" placeholder="Введи имя" required>
-   </div>
-    <div class="form_item">
-     <label for="bookname">
+                <div class="form_item">
+                    <label for="bookname">
+                        Название книги
+                    </label>
+                    <input class="form_input _req" type="bookname" name="bookname" id="bookname"
+                        placeholder="Введи название книги">
+                </div>
 
-Название книги
+                <div class="form_item">
+                    <label for="photo">
+                        Загрузи обложку (если есть)
+                    </label>
+                    <input type="file" name="img" title="Загрузи фотографию или рисунок обложки">
+                </div>
 
-</label><input class="form_input" type="bookname" name="bookname" id="bookname" placeholder="Введи название книги" required>
-      </div>
-       <div class="form_item">
-        <label for="photo">Загрузи обложку (если есть)</label>
-      <input type="file" name="photo" title="Загрузи фотографию или рисунок обложки">
-      </div>
-       <div class="form_item">
-        <label for="filetext">Текст (в формате ворд вместе с иллюстрациями, если они есть)</label>
-      <input type="file" name="textfile" title="Загрузи текст в формате ворд вместе с иллюстрациями, если они есть">
-      </div>
+                <div class="form_item">
+                    <label for="filetext">
+                        Текст (в формате ворд вместе с иллюстрациями, если они есть)
+                    </label>
+                    <input type="file" name="textfile"
+                        title="Загрузи текст в формате ворд (docx) вместе с иллюстрациями, если они есть">
+                </div>
 
-       <div class="form_item">
-<label for="filetext">Или набери чистый текст книги</label><br>
-        <textarea class="form_input" name="description" cols="30" rows="10" placeholder="Введи чистый текст книги" required">
-      </textarea>
-       </div>
-        <div class="form_item">
-        <label for="photo_illustration">Загрузи иллюстрации (при загрузке нескольких файлов - зажми клавишу CTRL или Shift)</label><br>
-     <input type="file" name="file" multiple / title="Загрузи фотографию или рисунок обложки">
-      </div>
-        <h2>И, немного о себе</h2>
-      <div class="form_item">
-         <label for="userphoto">Фотография</label>
-          <input type="file" name="userphoto" title="Загрузи свою фотографию">
-         </div>
-          <div class="form_item">                     <label for="email">Почта</label>
-             <input class="form_input" type="email" name="email" id="email" placeholder="Введи email" required title="Введи действительный адрес электронной почты.">
-         </div>
-          <div class="form_item">
-           <label for="birth_date">Дата рождения</label>
-           <input class="form_input" type="date" name="birth_date" required title="Введи свою дату рождения.">
-         </div> 
-           <div class="form_item">
- <label for="gender">Пол</label><BR>
- <input type="hidden" name="gender" value="men"> 
- 
-    <input type="radio" name="sex" value="Male"> Мужской<BR>
-    <input type="radio" name="sex" value="Female"> Женский<BR>  
+                <div class="form_item">
+                    <label for="filetext">
+                        Или набери чистый текст книги
+                    </label>
+                    <br>
+                    <textarea class="form_input _req" name="description" cols="30" rows="10"
+                        placeholder="Введи чистый текст книги" "></textarea>
+                </div>
 
-<BR><BR>
+                <div class=" form_item">
+                    <label for="photo_illustration">Загрузи иллюстрации (при загрузке нескольких файлов - зажми клавишу
+                        CTRL или Shift)
+                    </label>
+                    <br>
+                    <input type="file" name="files[]" multiple="multiple"
+                        title="Загрузи фотографию или рисунок обложки">
+                </div>
 
-<button class="main_button" input type="submit">Отправить</button></div>
+                <h2>
+                    И, немного о себе
+                </h2>
+
+                <div class="form_item">
+                    <label for="userphoto">
+                        Фотография
+                    </label>
+                    <input type="file" name="userphoto" title="Загрузи свою фотографию">
+                </div>
+
+                <div class="form_item"> 
+                    <label for="email">
+                    Почта
+                </label>
+                    <input class="form_input _req" type="email" name="email" id="email" placeholder="Введи email"
+                         title="Введи действительный адрес электронной почты.">
+                </div>
+
+                <div class="form_item">
+                    <label for="birth_date">
+                        Дата рождения
+                    </label>
+                    <input class="form_input _req" type="date" name="birth_date" 
+                        title="Введи свою дату рождения.">
+                </div>
+
+                <div class="form_item">
+                    <label for="gender">
+                        Пол
+                    </label>
+                    <BR>
+                    <input type="hidden" name="gender" value="men">
+                    <input type="radio" name="sex" value="Male"> Мужской<BR>
+                    <input type="radio" name="sex" value="Female"> Женский<BR>
+
+                    <BR><BR>
+
+                </div>
+                <button class="main_button" type="submit">Отправить</button>
             </form>
