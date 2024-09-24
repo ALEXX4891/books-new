@@ -22,16 +22,16 @@ mysqli_close($db);
   <div class="container books__container">
     <div class="link-block">
       <a href="<?= $link_author ?>" class="link-block__link" target="_blank">
-        <?= $link_author ?>
+        Автор
       </a>
       <a href="<?= $link_forum ?>" class="link-block__link" target="_blank">
-        <?= $link_forum ?>
+        Обсуждение
       </a>
       <a href="<?= $link_announcement ?>" class="link-block__link" target="_blank">
-        <?= $link_announcement ?>
+        Аннотация
       </a>
       <a href="<?= $link_buy ?>" class="link-block__link" target="_blank">
-        <?= $link_buy ?>
+        Купить книгу
       </a>
     </div>
     <h1 class="books__title"><?= $bookName ?></h1>

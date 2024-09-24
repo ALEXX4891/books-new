@@ -1,0 +1,1 @@
+<div class="badge badge-warning badge-pill">Админ 27.11.2020 21:04</div><br><div class="alert alert-success mt-3 p-1 alert-mess">Это гостевая книга</div><br>

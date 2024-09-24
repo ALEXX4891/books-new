@@ -1,0 +1,1 @@
+<span class="date-mess">Админ 10.06.2024 15:50 МСК </span><br> <span class='message'>Обсуждаем книгу "для примера".</span>

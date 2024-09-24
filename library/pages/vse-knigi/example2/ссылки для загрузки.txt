@@ -1,6 +1,0 @@
-example2
-
-<a href="example2/author.html"> Страница автора</a>
-<a href="example2/annotation.html">Аннотация</a>
-<a href="example2/sale.html">Подарок</a>
-<a href="example2/blog/index.php">Подарок</a>

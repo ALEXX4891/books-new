@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="../../../css/style.css">
+    <script src="../../../scripts/base.js" defer></script>
+    <title>"для примера"</title>
+</head>
+<body>
+    <header>
+        <nav id="head_nav">
+            <a href="/library/pages/vse-knigi/" class="logo">Вернуться в библиотеку</a>
+                
+            <button class="burger" >
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+      <nav class="mobile_menu">
+
+            <a class="mobile_link active" href="/library/pages/vse-knigi/" class="room">Вернуться в библиотеку</a>
+              
+    </nav>
+
+    <div class="test_block">
+
+        <div class="main_panel">
+
+            <div class="panel">
+               <a href="/library/pages/vse-knigi/" class="panel_link end">Вернуться в библиотеку</a>
+            </div>
+        </div>
+        <div class="content_wrapper">
+            <div class="content">
+                <h2 class="title">Книга "для примера"</h2>
+                <h3 class="title">Автор: для примера2</h3>
+
+         <img src="picture _sale.jpg" alt="обложка"  width="200" height="211" >         
+        
+ <p>Книгу можно приобрести для подарка в бумажном варианте</p>
+ <p>Красивый дизайн твердой (или мягкой) обложки. Сногсшибательные иллюстрации </p>
+ <p>Множество приятных минут перед сном подарит эта книга всем, кому вы ее подарите. Особенно с авторской подписью</p>
+ <p>Для заказа подарочного экземпляра (или тиража) заполни форму для связи с издательством</p>
+
+<div class="auth_block container">
+        <div class="login_window">
+            
+            <form action="./mail.php" id="loginForm" method="post">
+                <h2>Оставь сообщение, тебе перезвонят:</h2>
+                <div class="form_item">
+  <!--Тег используется для группировки связанных элементов в форме-->
+
+  <fieldset>
+  <!--Тег задает заголовок для групповых элементов-->
+  Ваше имя: . . . . .  
+  <!--Устанавливает однострочное текстовое поле ввода:-->
+  <input class="form_input" type="text" name="name" id="username" placeholder="Введи имя"><br>
+  <!--Используется для полей ввода, которые должны содержать адрес электронной почты.-->
+  E-mail: . . . . . . . .
+  <input class="form_input" type="text" name="email" id="email" placeholder="Введи почту">
+  Телефон: . . . . . .
+  <input class="form_input" type="text" name="phone" id="phone" placeholder="Введи номер телефона" required>
+  Сообщение: (Не более 100 знаков)
+  <!--Тег разрешает многострочный ввод текста.-->
+  <textarea rows="2" cols="20" name="message"  maxlength="100" placeholder="Введи свой текст">хочу подарочный экземпляр книги</textarea><br>
+
+  <!--Устанавливает кнопку для отправки данных формы в обработчик формы.-->
+
+                <input type="hidden" name="gender" value="women">
+                <button class="main_button" input type="submit">Отправить</button>
+</fieldset>
+                
+            </form>
+        </div> </div>
+
+      
+    </div>
+   </div>
+
+</body>
+</html>

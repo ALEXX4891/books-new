@@ -64,13 +64,9 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
                 <a class='books__value' href='/library/pages/kniga?id={$booksArr[$i]['id']}' target='_blank'>{$booksArr[$i]['name']} 
                 </a>
 
-                <p class='books__value'>  
+                <a class='books__value' href='{$booksArr[$i]['link_author']}'>  
                   {$booksArr[$i]['author']} 
-                </p>  
-
-                <-- <a class='books__value' href='{$booksArr[$i]['link_author']}'>  
-                  {$booksArr[$i]['author']} 
-                </a> --> 
+                </a>
 
                 <div class='books__info'>       
                   <span class='books__value'>

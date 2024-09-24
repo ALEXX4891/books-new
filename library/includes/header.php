@@ -10,7 +10,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/head.php';
 		<a href="../../../index.html" class="logo">
 			<img src="../../images/logo.jpg">Вернуться на сайт
 		</a>
-		<a class="link" href="../../zagruzka.html" class="room">
+		<a href="../../zagruzka.html" class="room">
 Добавить свое произведение
 		</a>
 

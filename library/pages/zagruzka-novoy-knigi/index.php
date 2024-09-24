@@ -94,7 +94,12 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <!-- <input class="input _req" type="text" name="category" id="save-form-category" placeholder="Категория произведения"> -->
         <!-- <input class="input _req _file" type="file" name="file" id="file"> -->
         <input class="open-btn" type="submit" value="Cохранить">
+        <label class="label" for="volume">
+            Количество страниц:
+            <input class="input save-form-volume _req" type="text" name="volume" id="save-form-volume">
+        </label>
       </form>
+
 
       <!-- <a href="/library/pages/vse-knigi" class="all-btn">
         Посмотреть все загруженные книги

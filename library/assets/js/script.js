@@ -40,6 +40,7 @@ if (formDocx) {
 
           // sliderInit();
           showSaveForm();
+          countPages();
         }
       } else {
         // popupOpen(document.getElementById("error"));
@@ -196,6 +197,19 @@ function showSaveForm() {
   saveFormLink_forum.value = docxFormLink_forum;
   saveFormLink_announcement.value = docxFormLink_announcement;
   saveFormLink_buy.value = docxFormLink_buy;
+}
+
+function countPages() {
+  const pages = document.querySelectorAll(".page[data-page]");
+  const input = document.getElementById("save-form-volume");
+  let count = 0;
+  pages.forEach((page) => {
+    count++;
+  });
+  input.value = count;
+  // console.log(count);
+  // console.log(input.value);
+  // return count;
 }
 
 function showDocxForm() {
