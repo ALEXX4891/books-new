@@ -9,7 +9,7 @@ if (formDocx) {
   async function sendForm(e) {
     e.preventDefault();
 
-    let error = formvalidation(formDocx);
+    let error = formReqValidation(formDocx);
     // console.log(error);
 
     if (error === 0) {
@@ -60,7 +60,7 @@ if (formSave) {
   async function sendForm(e) {
     e.preventDefault();
 
-    let error = formvalidation(formSave);
+    let error = formReqValidation(formSave);
 
     if (error === 0) {
       formSave.classList.add("_sending");
@@ -97,7 +97,7 @@ if (formSave) {
   }
 }
 
-function formvalidation(item) {
+function formReqValidation(item) {
   let error = 0;
   let formReq = item.querySelectorAll("._req");
   // console.log(formReq);
@@ -452,9 +452,28 @@ if (loadForm.length) {
       console.log(form);
       e.preventDefault();
 
-      let errore = formvalidation(form);
+      let reqError = formReqValidation(form);
 
-      if (errore === 0) {
+      let imgError = formImgValidation(form);
+
+      let execError = formExecValidation(form);
+
+      if (reqError !== 0) {
+        alert("Заполните обязательные поля");
+        return false;
+      }
+
+      if (imgError !== 0) {
+        alert("Разрешены только картинки формата jpg, jpeg, png");
+        return false;
+      }
+
+      if (execError !== 0) {
+        alert("Формат файла должен быть .docx");
+        return false;
+      }
+
+      // if (reqError === 0) {
         form.classList.add("_sending");
         let formData = new FormData(form);
         // const dataRequest = form.closest(".popup").getAttribute("data-request");
@@ -467,9 +486,9 @@ if (loadForm.length) {
           body: formData,
         });
 
-        // for (var pair of formData.entries()) {
-        //   console.log(pair[0] + ", " + pair[1]);
-        // }
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
 
         if (response.ok) {
           // let result = await response.json();
@@ -483,15 +502,14 @@ if (loadForm.length) {
           form.classList.remove("_sending");
         } else {
           // popupOpen(document.getElementById("error"));
+          alert("Произошла ошибка при отправке формы");
           form.classList.remove("_sending");
         }
-      } else {
-        alert("Заполните обязательные поля");
-      }
+      // }
     }
   });
 
-  function formvalidation(item) {
+  function formReqValidation(item) {
     let error = 0;
     let formReq = item.querySelectorAll("._req");
 
@@ -518,19 +536,67 @@ if (loadForm.length) {
     return error;
   }
 
+  function formImgValidation(item) {
+    let error = 0;
+    let formReq = item.querySelectorAll("._img");
+    for (let index = 0; index < formReq.length; index++) {
+      const input = formReq[index];
+
+      formRemoveError(input);
+
+      if (input.value !== "") {
+        if (!input.value.match(/\.(jpg|jpeg|png)$/)) {
+          formAddError(input);
+          error++;
+        }
+      }
+    }
+    return error;
+  }
+
+  function formExecValidation(item) {
+    let error = 0;
+    let formReq = item.querySelectorAll("._docx");
+    for (let index = 0; index < formReq.length; index++) {
+      const input = formReq[index];
+
+      formRemoveError(input);
+
+      if (input.value !== "") {
+        if (!input.value.match(/\.(docx)$/)) {
+          formAddError(input);
+          error++;
+        }
+      }
+    }
+    return error;
+  }
+
   function formAddError(input) {
     input.parentElement.classList.add("_error");
     input.classList.add("_error");
   }
 
+  
   function formRemoveError(input) {
     input.parentElement.classList.remove("_error");
     input.classList.remove("_error");
   }
-
+  
   function emailTest(input) {
     return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
   }
+  // function getErrorMessage(base_key) {
+//   let message = lang(base_key);
+//   let error = smtp.getError();
+//   if (!empty(error['error'])) {
+//     message += ' ' + error['error'];
+//     if (!empty(error['detail'])) {
+//       message += ' ' + error['detail'];
+//     }
+//   }
+//   return message;
+// }
 }
 
 // ---------------------------------- end отправка и валидация формы ----------------------------------

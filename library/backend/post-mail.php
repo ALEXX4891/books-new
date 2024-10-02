@@ -80,9 +80,9 @@ if (!empty($textfile['name'][0])) {
 }
 
 if (count($files['name']) > 0) {
-  echo '<pre>';
-print_r($files);
-echo '</pre>';
+//   echo '<pre>';
+// print_r($files);
+// echo '</pre>';
 
   for ($i = 0; $i < count($files['name']); $i++) {
     $mail->addAttachment($files['tmp_name'][$i], $files['name'][$i]);

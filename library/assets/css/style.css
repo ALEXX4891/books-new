@@ -1066,6 +1066,8 @@ header nav a.active {
 .auth_block .login_window form .form_item {
   text-align: center;
   width: 100%;
+  color: #000;
+
 }
 .auth_block .login_window form .form_item label {
   font-size: 18px;
@@ -1377,7 +1379,7 @@ button,
 select {
   font-family: inherit;
   font-size: inherit;
-  color: inherit;
+  /* color: inherit; */
   background-color: transparent;
 }
 
@@ -1456,7 +1458,8 @@ ul {
   list-style: none;
 }
 
-input {
+input
+textarea {
   padding: 0;
   width: 100%;
   color: #000;
