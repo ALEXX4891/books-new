@@ -43,7 +43,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
             'contain_img' => $bookFromDb['contain_img'],
             'volume' => $bookFromDb['volume'],
             'added_date' => $bookFromDb['added_date'],
-            'skin' => $bookFromDb['skin']
+            'skin' => $bookFromDb['skin'] ? $bookFromDb['skin'] : 'skin.jpg',
           ];
         } while ($bookFromDb = mysqli_fetch_array($resultBook));
       }
@@ -57,11 +57,11 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 
         for ($i = 0; $i < count($booksArr); $i++) {
           if ($booksArr[$i]['category'] == $category) {
-
+            $skin = file_exists($_SERVER['DOCUMENT_ROOT'] . '/library/images/' . $booksArr[$i]['skin']) ? $booksArr[$i]['skin'] : 'skin.jpg';
             echo "
               <li class='books__item' data-category='{$category}' style='display: none;'> 
                 <div class='books__img'>
-                  <img src='/library/images/{$booksArr[$i]['skin']}' alt='{$booksArr[$i]['name']}'>
+                  <img src='/library/images/{$skin}' alt='{$booksArr[$i]['name']}'>
                 </div>
                 
                 <div class='books__text-block'>
