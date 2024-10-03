@@ -1806,8 +1806,14 @@ a {
   font-weight: 700;
 }
 
-a.books__value:hover {
+a.books__value {
   text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.3s ease;
+}
+
+a.books__value:hover {
+  text-decoration-color: white;
 }
 
 .books__item .books__text-block {
