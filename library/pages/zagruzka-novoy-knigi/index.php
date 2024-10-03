@@ -67,14 +67,14 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <!-- </label> -->
 
         <label class="label" for="file">
-        Файл книги:*
+        Файл книги:* (docx)
         <input class="input _req _file" type="file" name="file" id="file">
 
         </label>
 
         <label class="label" for="skin">
-        Обложка книги:*
-        <input class="input docx-form-link_skin _req" type="file" name="skin" id="skin">
+        Обложка книги:* (jpeg, jpg или png)
+        <input class="input docx-form-link_skin _req _skin" type="file" name="skin" id="skin">
         <div class="preview"> 
           <img id="preview" src="" alt="">
         </div>

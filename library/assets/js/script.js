@@ -121,6 +121,27 @@ function formReqValidation(item) {
       }
     }
 
+    if (input.classList.contains("_skin")) {
+      file = input.files[0];
+      size = file.size;
+      if (file) {
+        const ext = file.name.split(".").pop();
+        if (ext !== "jpeg" && ext !== "jpg" && ext !== "png") {
+          formAddError(input);
+          error++;
+          alert("Формат обложки должен быть jpeg, jpg или png");
+        }
+
+        if (size > 100000) {
+          formAddError(input);
+          error++;
+          alert("Размер обложки не должен превышать 100кб");
+        }
+      }
+
+
+    }
+
     if (input.classList.contains("_email")) {
       if (emailTest(input)) {
         formAddError(input);
@@ -229,6 +250,7 @@ function showDocxForm() {
   formDocx.style.display = "grid";
   saveForm.style.display = "none";
   formDocx.reset();
+  document.getElementById("preview").src = "";
 }
 
 const booksPage = document.querySelector(".books-page");
