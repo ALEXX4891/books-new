@@ -22,9 +22,8 @@ $mail->setFrom('admin@ivq.ru', 'ivq');
 
 // кому письмо
 $recipients = [
-  'ALEXX4891@mail.ru' => 'Person One',
-  'ALEXX4891@yandex.ru' => 'Person One',
-
+  'smclud1@ya.ru' => 'Person One',
+  // 'ALEXX4891@yandex.ru' => 'Person One',
 ];
 
 foreach ($recipients as $email => $name) {
