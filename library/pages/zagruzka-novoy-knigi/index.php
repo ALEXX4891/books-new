@@ -73,7 +73,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         </label>
 
         <label class="label" for="skin">
-        Обложка книги:* (jpeg, jpg или png)
+        Обложка книги:* (jpeg, jpg или png. Размер не более 100кб.)
         <input class="input docx-form-link_skin _req _skin" type="file" name="skin" id="skin">
         <div class="preview"> 
           <img id="preview" src="" alt="">
