@@ -1961,3 +1961,9 @@ a {
   opacity: 1;
   visibility: visible;
 }
+
+.preview {
+  width: 191px;
+  /* height: 100px; */
+  /* object-fit: cover; */
+}

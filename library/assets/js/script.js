@@ -1,43 +1,42 @@
-const formSave = document.getElementById("save-form");
 
 const formDocx = document.getElementById("docx-form");
 // const result = document.getElementById("result");
 
 if (formDocx) {
   formDocx.addEventListener("submit", sendForm);
-
+  
   async function sendForm(e) {
     e.preventDefault();
-
+    
     let error = formReqValidation(formDocx);
     // console.log(error);
-
+    
     if (error === 0) {
       formDocx.classList.add("_sending");
       let formData = new FormData(formDocx);
-
+      
       let response = await fetch("parser.php", {
         method: "POST",
         body: formData,
       });
-
+      
       if (response.ok) {
         // window.location.href = "/library/backend/parser.php";
         let result = await response.json();
         // formDocx.reset();
         // popupOpen(document.getElementById("success"));
         formDocx.classList.remove("_sending");
-
+        
         if (result == "Ошибка: неверный пароль!") {
           alert(result);
         } else {
           document.querySelector(".result-wrap").style.display = "block";
           // document.querySelector(".result-wrap").innerHTML = result;
-
+          
           document.getElementById("result").innerHTML = result;
           // console.log(result);
           showPage();
-
+          
           // sliderInit();
           showSaveForm();
           countPages();
@@ -54,19 +53,22 @@ if (formDocx) {
 
 const resultBox = document.querySelector(".result");
 
+const formSave = document.getElementById("save-form");
 if (formSave) {
   formSave.addEventListener("submit", sendForm);
-
+  
   async function sendForm(e) {
     e.preventDefault();
-
+    
     let error = formReqValidation(formSave);
 
     if (error === 0) {
       formSave.classList.add("_sending");
       let formData = new FormData(formSave);
       const book = document.querySelector(".book").innerHTML;
+      const skin = document.getElementById("skin").files[0];
       formData.append("book", book);
+      formData.append("skin", skin);
 
       let response = await fetch("saver.php", {
         method: "POST",
@@ -163,6 +165,7 @@ function showSaveForm() {
   const docxFormLink_forum = document.getElementById("docx-form-link_forum").value;
   const docxFormLink_announcement = document.getElementById("docx-form-link_announcement").value;
   const docxFormLink_buy = document.getElementById("docx-form-link_buy").value;
+  const docxFormLink_skin = document.getElementById("preview").src;
 
   // yle="display: none;" method="post" enctype="multipart/form-data">
   //     <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги*">
@@ -172,6 +175,8 @@ function showSaveForm() {
   //     <input class="input docx-form-link_forum _req" type="text" name="link_forum" id="docx-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
   //     <input class="input docx-form-link_announcement _req" type="text" name="link_announcement" id="docx-form-link_announcement" placeholder="Ссылка на анотацию*">
   //     <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form
+  //     <input class="input docx-form-link_skin _req" type="file" name="skin" id="skin">
+
 
   let saveFormName = document.getElementById("save-form-name");
   let saveFormCategory = document.getElementById("save-form-category");
@@ -180,6 +185,9 @@ function showSaveForm() {
   let saveFormLink_forum = document.getElementById("save-form-link_forum");
   let saveFormLink_announcement = document.getElementById("save-form-link_announcement");
   let saveFormLink_buy = document.getElementById("save-form-link_buy");
+  let saveFormLink_skin = document.getElementById("save-form-link_skin");
+
+
 
   // <input class="input docx-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
   // <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
@@ -188,7 +196,8 @@ function showSaveForm() {
   // <input class="input save-form-link_forum _req" type="text" name="link_forum" id="save-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
   // <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
   // <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
-
+  // <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
+  //<input class="input save-form-link_skin _req" type="file" name="skin" id="skin">  
 
   saveFormName.value = docxFormName;
   saveFormCategory.value = docxFormCategory;
@@ -197,6 +206,8 @@ function showSaveForm() {
   saveFormLink_forum.value = docxFormLink_forum;
   saveFormLink_announcement.value = docxFormLink_announcement;
   saveFormLink_buy.value = docxFormLink_buy;
+  saveFormLink_skin.src = docxFormLink_skin;
+  // saveFormLink_skin.src = docxFormLink_skin;
 }
 
 function countPages() {
@@ -600,3 +611,18 @@ if (loadForm.length) {
 }
 
 // ---------------------------------- end отправка и валидация формы ----------------------------------
+// -------------------------------------- start показ превью --------------------------
+const picInput = document.getElementById('skin');
+if (picInput) {
+
+  picInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        const preview = document.getElementById('preview');
+        preview.src = reader.result;
+      };
+    });
+}
+// -------------------------------------- end показ превью --------------------------

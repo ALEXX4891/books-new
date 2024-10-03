@@ -66,10 +66,19 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form-link_buy" placeholder="Ссылка на страницу в магазине*">
         <!-- </label> -->
 
-        <!-- <label class="label" for="file"> -->
-        <!-- Файл книги:* -->
+        <label class="label" for="file">
+        Файл книги:*
         <input class="input _req _file" type="file" name="file" id="file">
-        <!-- </label> -->
+
+        </label>
+
+        <label class="label" for="skin">
+        Обложка книги:*
+        <input class="input docx-form-link_skin _req" type="file" name="skin" id="skin">
+        <div class="preview"> 
+          <img id="preview" src="" alt="">
+        </div>
+        </label>
 
 
         <!-- <label class="label" for="password"> -->
@@ -89,6 +98,11 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <input class="input save-form-link_forum _req" type="text" name="link_forum" id="save-form-link_forum" placeholder="Ссылка на страницу обсуждения*">
         <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
         <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
+        <!-- <input class="input save-form-link_skin _req" type="file" name="skin" id="skin">         -->
+        <p>Обложка:</p>
+        <div class="preview">
+          <img id="save-form-link_skin" src="" alt="">
+        </div>
 
         <!-- <input class="input _req" type="text" name="name" id="save-form-name" placeholder="Название книги"> -->
         <!-- <input class="input _req" type="text" name="category" id="save-form-category" placeholder="Категория произведения"> -->

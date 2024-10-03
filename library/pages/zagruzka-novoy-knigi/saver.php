@@ -22,6 +22,24 @@ $contain_img = strpos($content, 'src="temp-images') ? true : false;
 $volume = $_POST['volume'];
 $date = date("Y-m-d H:i:s");
 
+if ($_FILES['skin']['error'] > 0) {
+  $skin = '';
+} else {
+  $rand = rand(1, 999);
+  $data = date("dmy");
+  $time = date("His"); // Определяем дату и время, для вставки в новое имя файла
+  $mainPicture = $_FILES['skin']['name']; // Принимаем в переменную загруженный файл
+  $type = strtolower(substr($mainPicture, 1 + strrpos($mainPicture, "."))); // Определяем расширение файла, переводим его в нижний регистр
+  // $file_new_name = $uniqId . '-' . $rand . '-' . $data . '-' . $time . '.' . $type; // Определяем новое имя файла
+  $file_new_name = "{$uniqId}-{$rand}-{$data}-{$time}.{$type}"; // Определяем новое имя файла
+  move_uploaded_file($_FILES['skin']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/library/images/' . $file_new_name); // Сохраняем загруженное изображение
+  // echo $file_new_name;
+  $skin = $file_new_name;
+  // $skin = $_FILES['skin'];
+  // echo $images['skin'] . '<br>';
+}
+
+
 
 // '$name',
 // '$category',
@@ -94,7 +112,8 @@ $sql = "INSERT INTO `books` (
   `link_buy`, 
   `contain_img`,
   `volume`,
-  `added_date`
+  `added_date`,
+  `skin`
   ) VALUES(
     '$name',
     '$category',
@@ -106,7 +125,8 @@ $sql = "INSERT INTO `books` (
     '$link_buy',
     '$contain_img',
     '$volume',
-    '$date'
+    '$date',
+    '$skin'
     )";
 
 
