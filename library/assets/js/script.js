@@ -254,7 +254,8 @@ function showDocxForm() {
 }
 
 const booksPage = document.querySelector(".books-page");
-if (booksPage) {
+const booksPagePrivate = document.querySelector(".books-page-private");
+if (booksPage || booksPagePrivate) {
   // console.log("booksPage");
   const categories = document.querySelectorAll(".categories__item");
   categories.forEach((item) => {
