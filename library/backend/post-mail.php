@@ -22,7 +22,7 @@ $mail->setFrom('admin@ivq.ru', 'ivq');
 
 // кому письмо
 $recipients = [
-  'smclud1@ya.ru' => 'Person One',
+  'smclub1@ya.ru' => 'Person One',
   // 'ALEXX4891@yandex.ru' => 'Person One',
 ];
 

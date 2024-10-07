@@ -26,9 +26,24 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
 
     <div class="form-wrapper">
       <form class="form" id="docx-form" action="#" method="post" enctype="multipart/form-data">
+
+        <div class="form_item">
+          <h4 class="label">
+            Выберите библиотеку
+          </h4>
+          <label class="radio-label">
+            <input class="docx-radio-btn" type="radio" name="library" value="Public" checked>
+            Публичная
+          </label>
+
+          <label class="radio-label">
+            <input class="docx-radio-btn" type="radio" name="library" value="Private">
+            Приватная
+          </label>
+        </div>
         <!-- <label class="label" for="docx-form-name"> -->
         <!-- Введите название книги:* -->
-        <input class="input docx-form-name _req"  type="text" name="name" id="docx-form-name" placeholder="Название книги*">
+        <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги*">
         <!-- </label> -->
 
         <!-- <label class="label" for="docx-form-category"> -->
@@ -67,17 +82,17 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <!-- </label> -->
 
         <label class="label" for="file">
-        Файл книги:* (docx)
-        <input class="input _req _file" type="file" name="file" id="file">
+          Файл книги:* (docx)
+          <input class="input _req _file" type="file" name="file" id="file">
 
         </label>
 
         <label class="label" for="skin">
-        Обложка книги:* (jpeg, jpg или png. Размер не более 100кб.)
-        <input class="input docx-form-link_skin _req _skin" type="file" name="skin" id="skin">
-        <div class="preview"> 
-          <img id="preview" src="" alt="">
-        </div>
+          Обложка книги:* (jpeg, jpg или png. Размер не более 100кб.)
+          <input class="input docx-form-link_skin _req _skin" type="file" name="skin" id="skin">
+          <div class="preview">
+            <img id="preview" src="" alt="">
+          </div>
         </label>
 
 
@@ -91,6 +106,20 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
       </form>
 
       <form class="form" id="save-form" action="#" style="display: none;" method="post" enctype="multipart/form-data">
+      <div class="form_item">
+          <h4 class="label">
+            Библиотека
+          </h4>
+          <label class="radio-label">
+            <input class="save-radio-btn" type="radio" name="library" value="Public">
+            Публичная
+          </label>
+
+          <label class="radio-label">
+            <input class="save-radio-btn" type="radio" name="library" value="Private">
+            Приватная
+          </label>
+        </div>
         <input class="input save-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
         <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
         <input class="input save-form-author _req" type="text" name="author" id="save-form-author" placeholder="Автор*">
@@ -109,8 +138,8 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         <!-- <input class="input _req _file" type="file" name="file" id="file"> -->
         <input class="open-btn" type="submit" value="Cохранить">
         <label class="label" for="volume">
-            Количество страниц:
-            <input class="input save-form-volume _req" type="text" name="volume" id="save-form-volume">
+          Количество страниц:
+          <input class="input save-form-volume _req" type="text" name="volume" id="save-form-volume">
         </label>
       </form>
 

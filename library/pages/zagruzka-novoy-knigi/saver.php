@@ -21,6 +21,7 @@ $link_buy = $_POST['link_buy'];
 $contain_img = strpos($content, 'src="temp-images') ? true : false;
 $volume = $_POST['volume'];
 $date = date("Y-m-d H:i:s");
+$library = $_POST['library'];
 
 if ($_FILES['skin']['error'] > 0) {
   $skin = '';
@@ -113,7 +114,9 @@ $sql = "INSERT INTO `books` (
   `contain_img`,
   `volume`,
   `added_date`,
-  `skin`
+  `skin`,
+  `library`
+
   ) VALUES(
     '$name',
     '$category',
@@ -126,7 +129,8 @@ $sql = "INSERT INTO `books` (
     '$contain_img',
     '$volume',
     '$date',
-    '$skin'
+    '$skin',
+    '$library'
     )";
 
 
@@ -146,6 +150,7 @@ $sql = "INSERT INTO `books` (
 // '$volume',
 // '$date'
 // echo $sql;
+// die();
 
 
 $result = mysqli_query($db, $sql);

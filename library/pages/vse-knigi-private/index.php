@@ -15,7 +15,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
       $categoryArr = [];
       $booksArr = [];
 
-      $resultCategory = mysqli_query($db, "SELECT * FROM books");
+      $resultCategory = mysqli_query($db, "SELECT * FROM books" . " WHERE library = 'Private'");
       $categoryFromDb = mysqli_fetch_array($resultCategory);
 
       if (mysqli_num_rows($resultCategory) > 0) {
@@ -25,7 +25,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/library/includes/header.php';
         } while ($categoryFromDb = mysqli_fetch_array($resultCategory));
       }
 
-      $resultBook = mysqli_query($db, "SELECT * FROM books");
+      $resultBook = mysqli_query($db, "SELECT * FROM books" . " WHERE library = 'Private'");
       $bookFromDb = mysqli_fetch_array($resultBook);
 
       if (mysqli_num_rows($resultBook) > 0) {

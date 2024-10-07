@@ -1,42 +1,41 @@
-
 const formDocx = document.getElementById("docx-form");
 // const result = document.getElementById("result");
 
 if (formDocx) {
   formDocx.addEventListener("submit", sendForm);
-  
+
   async function sendForm(e) {
     e.preventDefault();
-    
+
     let error = formReqValidation(formDocx);
     // console.log(error);
-    
+
     if (error === 0) {
       formDocx.classList.add("_sending");
       let formData = new FormData(formDocx);
-      
+
       let response = await fetch("parser.php", {
         method: "POST",
         body: formData,
       });
-      
+
       if (response.ok) {
         // window.location.href = "/library/backend/parser.php";
         let result = await response.json();
         // formDocx.reset();
         // popupOpen(document.getElementById("success"));
         formDocx.classList.remove("_sending");
-        
+
         if (result == "Ошибка: неверный пароль!") {
           alert(result);
         } else {
           document.querySelector(".result-wrap").style.display = "block";
           // document.querySelector(".result-wrap").innerHTML = result;
-          
+
           document.getElementById("result").innerHTML = result;
           // console.log(result);
           showPage();
-          
+
           // sliderInit();
           showSaveForm();
           countPages();
@@ -56,10 +55,10 @@ const resultBox = document.querySelector(".result");
 const formSave = document.getElementById("save-form");
 if (formSave) {
   formSave.addEventListener("submit", sendForm);
-  
+
   async function sendForm(e) {
     e.preventDefault();
-    
+
     let error = formReqValidation(formSave);
 
     if (error === 0) {
@@ -74,6 +73,10 @@ if (formSave) {
         method: "POST",
         body: formData,
       });
+
+      for (let el of formData.entries()) {
+        console.log(el[0] + ", " + el[1]);
+      }
 
       if (response.ok) {
         let result = await response.json();
@@ -123,8 +126,8 @@ function formReqValidation(item) {
 
     if (input.classList.contains("_skin")) {
       file = input.files[0];
-      size = file.size;
       if (file) {
+        size = file.size;
         const ext = file.name.split(".").pop();
         if (ext !== "jpeg" && ext !== "jpg" && ext !== "png") {
           formAddError(input);
@@ -138,8 +141,6 @@ function formReqValidation(item) {
           alert("Размер обложки не должен превышать 100кб");
         }
       }
-
-
     }
 
     if (input.classList.contains("_email")) {
@@ -187,6 +188,14 @@ function showSaveForm() {
   const docxFormLink_announcement = document.getElementById("docx-form-link_announcement").value;
   const docxFormLink_buy = document.getElementById("docx-form-link_buy").value;
   const docxFormLink_skin = document.getElementById("preview").src;
+  const docxLibraryBtns = document.querySelectorAll(".docx-radio-btn");
+  let docxLibraryBtnsValue = "";
+  for (let i = 0; i < docxLibraryBtns.length; i++) {
+    if (docxLibraryBtns[i].checked) {
+      docxLibraryBtnsValue = docxLibraryBtns[i].value;
+    }
+  }
+  // console.log(docxLibraryBtnsValue);
 
   // yle="display: none;" method="post" enctype="multipart/form-data">
   //     <input class="input docx-form-name _req" type="text" name="name" id="docx-form-name" placeholder="Название книги*">
@@ -198,17 +207,20 @@ function showSaveForm() {
   //     <input class="input docx-form-link_buy _req" type="text" name="link_buy" id="docx-form
   //     <input class="input docx-form-link_skin _req" type="file" name="skin" id="skin">
 
-
-  let saveFormName = document.getElementById("save-form-name");
-  let saveFormCategory = document.getElementById("save-form-category");
-  let saveFormAuthor = document.getElementById("save-form-author");
-  let saveFormLink_author = document.getElementById("save-form-link_author");
-  let saveFormLink_forum = document.getElementById("save-form-link_forum");
-  let saveFormLink_announcement = document.getElementById("save-form-link_announcement");
-  let saveFormLink_buy = document.getElementById("save-form-link_buy");
-  let saveFormLink_skin = document.getElementById("save-form-link_skin");
-
-
+  const saveFormName = document.getElementById("save-form-name");
+  const saveFormCategory = document.getElementById("save-form-category");
+  const saveFormAuthor = document.getElementById("save-form-author");
+  const saveFormLink_author = document.getElementById("save-form-link_author");
+  const saveFormLink_forum = document.getElementById("save-form-link_forum");
+  const saveFormLink_announcement = document.getElementById("save-form-link_announcement");
+  const saveFormLink_buy = document.getElementById("save-form-link_buy");
+  const saveFormLink_skin = document.getElementById("save-form-link_skin");
+  const saveLibraryBtns = document.querySelectorAll(".save-radio-btn");
+  for (let i = 0; i < saveLibraryBtns.length; i++) {
+    if (saveLibraryBtns[i].value == docxLibraryBtnsValue) {
+      saveLibraryBtns[i].checked = true;
+    }
+  }
 
   // <input class="input docx-form-name _req" type="text" name="name" id="save-form-name" placeholder="Название книги*">
   // <input class="input save-form-category _req" type="text" name="category" id="save-form-category" placeholder="Жанр произведения*">
@@ -218,7 +230,7 @@ function showSaveForm() {
   // <input class="input save-form-link_announcement _req" type="text" name="link_announcement" id="save-form-link_announcement" placeholder="Ссылка на анотацию*">
   // <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
   // <input class="input save-form-link_buy _req" type="text" name="link_buy" id="save-form-link_buy" placeholder="Ссылка на страницу в магазине*">
-  //<input class="input save-form-link_skin _req" type="file" name="skin" id="skin">  
+  //<input class="input save-form-link_skin _req" type="file" name="skin" id="skin">
 
   saveFormName.value = docxFormName;
   saveFormCategory.value = docxFormCategory;
@@ -481,7 +493,7 @@ if (loadForm.length) {
   // console.log("loadForm");
   loadForm.forEach((form) => {
     form.addEventListener("submit", sendForm);
-    
+
     async function sendForm(e) {
       console.log(form);
       e.preventDefault();
@@ -508,37 +520,37 @@ if (loadForm.length) {
       }
 
       // if (reqError === 0) {
-        form.classList.add("_sending");
-        let formData = new FormData(form);
-        // const dataRequest = form.closest(".popup").getAttribute("data-request");
-        // if (dataRequest) {
-        //   formData.append("dataRequest", dataRequest);
+      form.classList.add("_sending");
+      let formData = new FormData(form);
+      // const dataRequest = form.closest(".popup").getAttribute("data-request");
+      // if (dataRequest) {
+      //   formData.append("dataRequest", dataRequest);
+      // }
+
+      let response = await fetch("/library/backend/post-mail.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+
+      if (response.ok) {
+        // let result = await response.json();
+        form.reset();
+        // if (formData.get("id") == 3) {
+        //   popupOpen(document.getElementById("popup-success-subscribe"));
+        // } else {
+        //   popupOpen(document.getElementById("success"));
         // }
-
-        let response = await fetch("/library/backend/post-mail.php", {
-          method: "POST",
-          body: formData,
-        });
-
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-
-        if (response.ok) {
-          // let result = await response.json();
-          form.reset();
-          // if (formData.get("id") == 3) {
-          //   popupOpen(document.getElementById("popup-success-subscribe"));
-          // } else {
-          //   popupOpen(document.getElementById("success"));
-          // }
-          // TODO добавить логику показа разный сообщений об успешной отправке  через поле темы
-          form.classList.remove("_sending");
-        } else {
-          // popupOpen(document.getElementById("error"));
-          alert("Произошла ошибка при отправке формы");
-          form.classList.remove("_sending");
-        }
+        // TODO добавить логику показа разный сообщений об успешной отправке  через поле темы
+        form.classList.remove("_sending");
+      } else {
+        // popupOpen(document.getElementById("error"));
+        alert("Произошла ошибка при отправке формы");
+        form.classList.remove("_sending");
+      }
       // }
     }
   });
@@ -611,41 +623,39 @@ if (loadForm.length) {
     input.classList.add("_error");
   }
 
-  
   function formRemoveError(input) {
     input.parentElement.classList.remove("_error");
     input.classList.remove("_error");
   }
-  
+
   function emailTest(input) {
     return !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/.test(input.value);
   }
   // function getErrorMessage(base_key) {
-//   let message = lang(base_key);
-//   let error = smtp.getError();
-//   if (!empty(error['error'])) {
-//     message += ' ' + error['error'];
-//     if (!empty(error['detail'])) {
-//       message += ' ' + error['detail'];
-//     }
-//   }
-//   return message;
-// }
+  //   let message = lang(base_key);
+  //   let error = smtp.getError();
+  //   if (!empty(error['error'])) {
+  //     message += ' ' + error['error'];
+  //     if (!empty(error['detail'])) {
+  //       message += ' ' + error['detail'];
+  //     }
+  //   }
+  //   return message;
+  // }
 }
 
 // ---------------------------------- end отправка и валидация формы ----------------------------------
 // -------------------------------------- start показ превью --------------------------
-const picInput = document.getElementById('skin');
+const picInput = document.getElementById("skin");
 if (picInput) {
-
   picInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        const preview = document.getElementById('preview');
-        preview.src = reader.result;
-      };
-    });
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      const preview = document.getElementById("preview");
+      preview.src = reader.result;
+    };
+  });
 }
 // -------------------------------------- end показ превью --------------------------
